@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 
 const authenticate = (req, res, next) => {
-  // pegar o token do header (Bearer <token>)
   const token = req.headers.authorization?.split(' ')[1];
   
   if (!token) {
@@ -11,10 +10,10 @@ const authenticate = (req, res, next) => {
   try {
     // verificar e decodificar o token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // dados do usuário na requisição
+    req.user = decoded; 
     next();
   } catch (error) {
-    res.status(401).json({ error: "deu ruim no token ou tá expirado" });
+    res.status(401).json({ error: "Problema com o token ou expirou" });
   }
 };
 

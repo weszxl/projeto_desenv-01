@@ -1,8 +1,7 @@
 require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
 const app = express();
-
+const cors = require('cors');
 const authenticate = require('./middlewares/auth');
 
 const { google } = require('googleapis');
@@ -11,7 +10,6 @@ const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_SECRET,
   process.env.GOOGLE_REDIRECT_URI
 );
-
 
 app.use(cors());
 app.use(express.json());
@@ -37,27 +35,24 @@ app.use('/api/admin', adminRoutes);
 
 
 
-
-
 // test routes
 app.get('/', (req, res) => {
   res.send('helou moto');
 });
 
-// rota para lidar com o callback do Google
+// lidar com o callback do Google
 app.get('/auth/google/callback', async (req, res) => {
   try {
-    const { code } = req.query; // código de autorização retornado pelo Google
+    const { code } = req.query; 
 
     // código (access_token e refresh_token)
     const { tokens } = await oauth2Client.getToken(code);
     oauth2Client.setCredentials(tokens);
 
-    // salvar o refresh_token em .env
     console.log('Refresh Token:', tokens.refresh_token);
 
-    // redirecione para uma página de sucesso
-    res.send('Deu certo! Agora salva o código que retornou no terminal do server.js, e coloca .');
+    // redireciona para uma página de confirmação
+    res.send('Foi! Agora pega o código do terminal e coloca em .env.');
   } catch (error) {
     console.error('Erro no callback:', error);
     res.status(500).send('Erro na autenticação.');
@@ -65,7 +60,6 @@ app.get('/auth/google/callback', async (req, res) => {
 });
 
 
-// server
 const PORT = process.env.PORT || 3050;
 app.listen(PORT, () => {
   console.log(`o serve ta online bora joga mine | http://localhost:${PORT}`);

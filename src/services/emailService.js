@@ -1,6 +1,8 @@
-const nodemailer = require('nodemailer');
+// arquivo de teste para enviar e-mail
+// especificar email e senha de aplicativo
+// em .env nos campos EMAIL_USER e EMAIL_PASSWORD
 
-// adicionar email de destinatário para teste (necessário gerar uma senha de aplicativo)
+const nodemailer = require('nodemailer');
 console.log('Email User:', process.env.EMAIL_USER); 
 console.log('Email Password:', process.env.EMAIL_PASSWORD ? '(senha)' : 'Não definido'); 
 
@@ -17,8 +19,8 @@ const transporter = nodemailer.createTransport({
     const mailOptions = {
       from: 'noreply@plataforma.com',
       to,
-      subject: 'Consulta Agendada',
-      html: `<p>Sua consulta está agendada para ${new Date(startTime).toLocaleString()}.</p>`,
+      subject: 'Horário Agendado',
+      html: `<p>Reunião agendada para ${new Date(startTime).toLocaleString()}.</p>`,
     };
   
     await transporter.sendMail(mailOptions);
