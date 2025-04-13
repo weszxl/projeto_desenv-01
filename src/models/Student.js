@@ -8,7 +8,7 @@ class Student {
     const [id] = await db('students').insert({
       name: studentData.name,
       email: studentData.email,
-      password: hashedPassword, // salva o hash
+      password: hashedPassword,
       area: studentData.area
       
     });

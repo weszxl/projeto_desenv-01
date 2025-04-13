@@ -24,7 +24,7 @@ class Appointment {
            .orWhereBetween('end_time', [startTime, endTime]);
       });
 
-    // verificar slots marcados como disponíveis e não ocupados
+    // verificar horários como disponíveis ou não ocupados
     const availabilityConflict = await db('availability')
       .where('student_id', studentId)
       .andWhere('is_booked', false)
