@@ -11,8 +11,13 @@ const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_REDIRECT_URI
 );
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173', // porta do Vite
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
+}));
+
 app.use(express.json());
+
 
 const studentRoutes = require('./routes/studentRoutes');
 app.use('/api/students', studentRoutes);
@@ -31,8 +36,6 @@ app.use('/api/availability', availabilityRoutes);
 
 const adminRoutes = require('./routes/adminRoutes');
 app.use('/api/admin', adminRoutes);
-
-
 
 
 // test routes

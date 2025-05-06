@@ -7,6 +7,8 @@ const authenticate = (req, res, next) => {
     return res.status(401).json({ error: "Erro ao receber Token" });
   }
 
+  
+
   try {
     // verificar e decodificar o token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -15,6 +17,11 @@ const authenticate = (req, res, next) => {
   } catch (error) {
     res.status(401).json({ error: "Problema com o token ou expirou" });
   }
+
+  console.log(req.body);
+
 };
+
+
 
 module.exports = authenticate;

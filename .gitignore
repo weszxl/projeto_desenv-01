@@ -1,3 +1,6 @@
-node_modules
-.env
-temp-files
+backend/node_modules
+backend/.env
+backend/temp-files
+
+frontend/node_modules
+frontend/.env
