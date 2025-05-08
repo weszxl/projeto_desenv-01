@@ -10,6 +10,8 @@ Projeto para agendamento de atendimentos entre pacientes e estudantes.
 ```bash
 git clone https://github.com/weszxl/projeto_desenv-01
 cd projeto_desenv-01/
+
+git checkout -b <nome-da-branch> # criar nova branch para merge
 ```
 
 2. **Instale as dependências do backend e frontend**:
