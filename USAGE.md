@@ -4,71 +4,83 @@ Projeto para agendamento de atendimentos entre pacientes e estudantes.
 
 ---
 
-# Instalação
+## Instalação
 
-1.  **Clone o repositório**:
-   
-    ```bash
-    git clone https://github.com/weszxl/projeto_desenv-01
+1. **Clone o repositório**:
+```bash
+git clone https://github.com/weszxl/projeto_desenv-01
+cd projeto_desenv-01/
+```
 
-    cd projeto_desenv-01/
+2. **Instale as dependências do backend e frontend**:
+```bash
+cd projeto_desenv-01/backend
+npm install
+npx knex migrate:latest 
+```
 
-2.  **Instale as dependências do back / front**:
-
-    cd projeto_desenv-01/backend
-    npm install
-    npx knex migrate:latest 
-
-    cd projeto_desenv-01/frontend
-    npm install
+```bash
+cd projeto_desenv-01/frontend
+npm install
+```
 
 ---
 
-# Configure as variáveis de ambiente
+## Configure as variáveis de ambiente
 
-1. **crie um arquivo .env em (projeto_desenv-01/backend) com as seguintes variáveis:**
+1. **Crie um arquivo `.env` em `projeto_desenv-01/backend` com as seguintes variáveis:**
+```env
+JWT_SECRET=
 
-    JWT_SECRET=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_REFRESH_TOKEN=
+GOOGLE_REDIRECT_URI=url_localhost/auth/google/callback
 
-    GOOGLE_CLIENT_ID=
-    GOOGLE_CLIENT_SECRET=
-    GOOGLE_REFRESH_TOKEN=
-    GOOGLE_REDIRECT_URI=(url_localhost /auth/google/callback)
-    
-    EMAIL_USER=(testar o envio de emails)
-    EMAIL_PASS=(senha de aplicativo gerada pelo google)
+EMAIL_USER= # e-mail para envio
+EMAIL_PASS= # senha de aplicativo
+```
 
-2. **crie um arquivo .env em (projeto_desenv-01/frontend) com as seguintes variáveis:**
-
-    VITE_API_URL=(url localhost)
+2. **Crie um arquivo `.env` em `projeto_desenv-01/frontend` com as seguintes variáveis:**
+```env
+VITE_API_URL=url_localhost
+```
 
 3. **(Opcional para testes da API) Obtenha uma "REFRESH_TOKEN"**:
-    
-    - Execute: node backend/temp-files/getRefreshToken.js
-
-    - salve a URL gerada no terminal e insira no navegador
-    - Faça login com a conta usada para teste
-    - REFRESH_TOKEN vai ser exibido no terminal
-    - insira o token no campo "GOOGLE_REFRESH_TOKEN=" em /backend/.env
-
----
-
-# Execução do projeto
-
-    cd projeto_desenv/backend
-    npm run dev
-
-    projeto_desenv/frontend
-    npm run dev
+```bash
+node backend/temp-files/getRefreshToken.js
+```
+- Copie a URL exibida no terminal e abra no navegador.
+- Faça login com a conta Google usada para testes.
+- O terminal exibirá o `refresh_token`.
+- Insira o token no campo `GOOGLE_REFRESH_TOKEN=` no arquivo `/backend/.env`.
 
 ---
 
-# Rotas backend
+## Execução do projeto
 
-    /api/students	            	
-    /api/patients	            	
-    /api/auth	                	
-    /api/appointments	        	
-    /api/availability	        	
-    /api/admin                  	
-    /auth/google/callback       
+### Backend
+```bash
+cd projeto_desenv-01/backend
+npm run dev
+```
+
+### Frontend
+```bash
+cd projeto_desenv-01/frontend
+npm run dev
+```
+
+---
+
+## Rotas disponíveis
+
+```http
+/api/students
+/api/patients
+/api/auth
+/api/appointments
+/api/availability
+/api/admin
+/auth/google/callback
+```
