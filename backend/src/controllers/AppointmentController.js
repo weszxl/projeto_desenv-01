@@ -38,7 +38,7 @@ class AppointmentController {
       const appointmentId = await Appointment.create(appointmentData);
 
       // enviar e-mail de confirmação 
-      // (DEVE SER ESPECIFICADO UM ENDEREÇO DE EMAIL 
+      // (EM .env DEVE SER ESPECIFICADO UM ENDEREÇO DE EMAIL 
       // E UMA SENHA DE APLICATIVO PARA O TESTE)
       await sendAppointmentConfirmation(req.user.email, start_time, meetLink);
 
