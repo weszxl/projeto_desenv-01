@@ -6,27 +6,34 @@ import { api } from '../api/axiosConfig';
 const LoginModal = ({ onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('patient');
   const [error, setError] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('/api/auth/login', { email, password });
+      const response = await api.post('/api/auth/login', { 
+        email, 
+        password, 
+        role 
+      });
       
       if (response.data.token) {
-        login(response.data.token, response.data.role);
+        login(response.data.token, role);
         onClose();
-        // redirecionamento conforme user
-        response.data.role === 'student' 
-          ? navigate('/student-homepage') 
-          : navigate('/patient-homepage');
+        // redireciona conforme o tipo de usuário
+        role === 'student' 
+          ? navigate('/estudante') 
+          : navigate('/paciente');
       }
     } catch (err) {
       setError(err.response?.data?.error || 'Erro ao fazer login');
     }
   };
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
