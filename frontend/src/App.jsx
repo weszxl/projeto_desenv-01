@@ -1,30 +1,39 @@
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import HomePage from './pages/HomePage';
-import RegisterPage from './pages/RegisterDashboard';
-import VoluntaryPage from './pages/VoluntaryDashboard';
-import StudentPage from './pages/StudentDashboard';
-import PatientPage from './pages/PatientDashboard';
-import LoginPage from './pages/LoginPage';
+
+import HomePage from './pages/homepage';
+import RegisterPage from './pages/registerPage';
+import LoginPage from './pages/loginPage';
+import PatientPage from './pages/patientPage';
+import StudentPage from './pages/studentPage';
+import VoluntaryPage from './pages/voluntaryPage';
+import AdminPage from './pages/adminPage';
+
 
 function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/voluntary" element={<VoluntaryPage />} />
-          <Route path="/student-homepage" element={<StudentPage />} />
-          <Route path="/patient-homepage" element={<PatientPage />} />
-        </Routes>
-      </AuthProvider>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/cadastro" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
+
+        <Route path="/patientPage" element={<PatientPage />} />
+        <Route path="/studentPage" element={<StudentPage />} />
+        <Route path="/adminPage" element={<AdminPage />} />
+
+        <Route path="/voluntaryPage" element={<VoluntaryPage />} />
+
+
+
+      </Routes>
     </BrowserRouter>
   );
 }
 
 export default App;
+
+
 
 
 

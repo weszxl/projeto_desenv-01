@@ -1,0 +1,81 @@
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
+const Header = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const storedUser = localStorage.getItem('user');
+    
+    if (token && storedUser) {
+      setIsLoggedIn(true);
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setIsLoggedIn(false);
+    setUser(null);
+    setIsDropdownOpen(false);
+    navigate('/');
+  };
+
+  return (
+    <header className="bg-white shadow-md py-4 px-6 flex justify-between items-center">
+      <Link to="/" className="text-xl font-bold text-gray-800">LOGO</Link>
+      
+      <nav className="flex space-x-4">
+        {isLoggedIn && user ? (
+          <div className="relative">
+            <button 
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="flex items-center space-x-2 focus:outline-none"
+            >
+              <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
+                <span className="text-gray-700 font-semibold">
+                  {user.name.charAt(0).toUpperCase()}
+                </span>
+              </div>
+              <span className="text-gray-700">{user.name}</span>
+            </button>
+            
+            {isDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                <button
+                  onClick={handleLogout}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                >
+                  Sair
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <>
+            <Link 
+              to="/cadastro" 
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+            >
+              Cadastre-se
+            </Link>
+            <Link 
+              to="/login" 
+              className="px-4 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition"
+            >
+              Entrar
+            </Link>
+          </>
+        )}
+      </nav>
+    </header>
+  );
+};
+
+export default Header;
+

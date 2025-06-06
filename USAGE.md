@@ -4,6 +4,16 @@ Projeto para agendamento de atendimentos entre pacientes e estudantes.
 
 ---
 
+## 📁 Estrutura Geral
+
+- `backend/` - API Node.js com SQLite
+- `frontend/` - Aplicação React
+- `knex.js` para migrations
+- `nodemailer` - para envio de e-mails
+- `googleapis` - para integração com o Google Calendar
+
+---
+
 ## Instalação
 
 1. **Clone o repositório**:
@@ -34,11 +44,13 @@ npm install
 ```env
 JWT_SECRET=
 
+# Google Calendar
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 GOOGLE_REFRESH_TOKEN=
 GOOGLE_REDIRECT_URI=url_localhost/auth/google/callback
 
+# Email (ex: Gmail com senha de app)
 EMAIL_USER= # e-mail para envio
 EMAIL_PASS= # senha de aplicativo
 ```
@@ -78,11 +90,15 @@ npm run dev
 ## Rotas disponíveis
 
 ```http
-/api/students
-/api/patients
-/api/auth
-/api/appointments
-/api/availability
-/api/admin
-/auth/google/callback
+POST /auth/login - login para users
+GET /auth/google/callback - integração Google OAuth
+
+POST /users/register/patient - cadastro de pacientes
+POST /users/register/student - cadastro de estudantes (admin)
+
+POST /api/availability - nova disponibilidade (student)
+GET /api/availability/student/:studentId - horários disponíveis
+
+POST /api/appointments - criar agendamento (patient)
+GET /api/appointments - listar agendamentos do paciente
 ```

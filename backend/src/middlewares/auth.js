@@ -1,27 +1,22 @@
-const jwt = require('jsonwebtoken');
+const { verifyToken } = require('../utils/jwt');
 
-const authenticate = (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
+module.exports = (req, res, next) => {
+  // verificação do token em diferentes locais
+  let token = req.headers.authorization || req.query.token || req.cookies.token;
   
   if (!token) {
-    return res.status(401).json({ error: "Erro ao receber Token" });
+    return res.status(401).json({ error: 'acesso negado' });
   }
-
   
-
-  try {
-    // verificar e decodificar o token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; 
-    next();
-  } catch (error) {
-    res.status(401).json({ error: "Problema com o token ou expirou" });
+  if (token.startsWith('Bearer ')) {
+    token = token.slice(7);
   }
-
-  console.log(req.body);
-
+  
+  const decoded = verifyToken(token);
+  if (!decoded) {
+    return res.status(401).json({ error: 'token inválido' });
+  }
+  
+  req.user = decoded;
+  next();
 };
-
-
-
-module.exports = authenticate;

@@ -1,91 +1,74 @@
-## testes de requisições
+## TESTES
 
-# POST http://localhost:3050/api/students/register
+# ## CADASTRO DE PACIENTE
+# POST http://localhost:3050/users/register/patient
 # Content-Type: application/json
 
 # {
-#   "name": "Teste Teste",
-#   "email": "teste@teste.com",
-#   "password": "senha123",
-#   "area": "Psicologia"
+#   "name": "João Paciente",
+#   "email": "joao@exemplo.com",
+#   "password": "senha123"
 # }
 
-
-# POST http://localhost:3050/api/patients/register
+# ## LOGIN DE PACIENTE
+# POST http://localhost:3050/auth/login
 # Content-Type: application/json
 
 # {
-#   "name": "Carlos Teste",
-#   "email": "carlos30@teste.com",
-#   "password": "senha123",
-#   "condition": "Ansiedade"
+#   "email": "joao@exemplo.com",
+#   "password": "senha123"
 # }
 
-
-# // LOGIN
-# POST http://localhost:3050/api/auth/login
+# ## LOGIN DE ADMIN
+# POST http://localhost:3050/auth/login
 # Content-Type: application/json
 
 # {
-#   "email": "carlos30@teste.com",
-#   "password": "senha123",
-#   "role": "patient"
+#   "email": "admin2@exemplo.com",
+#   "password": "admin123"
 # }
 
 
-
-
-# POST http://localhost:3050/api/appointments/schedule
-# Authorization: Bearer 
+# ## CADASTRO ESTUDANTE POR ADMIN
+# POST http://localhost:3050/users/register/student
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sZSI6ImFkbWluIiwibmFtZSI6IkFkbWluMiIsImlhdCI6MTc0ODk3ODEzOSwiZXhwIjoxNzQ5MDY0NTM5fQ.C8bJGZ_ivwD58bX_BhhPuWMQmRNg3Jbu1VoWlerjsCY
 # Content-Type: application/json
 
 # {
-#   "student_id": 3,
-#   "start_time": "2025-04-23T14:00:00Z",
-#   "end_time": "2025-04-23T15:00:00Z"
+#   "name": "Maria saraiva",
+#   "email": "maria3@exemplo.com",
+#   "password": "senha123"
 # }
 
-# GET http://localhost:3050/api/appointments/debug-controller
-# Authorization: Bearer 
-
-# POST http://localhost:3050/api/patients/register
+# ## LOGIN ESTUDANTE
+# POST http://localhost:3050/auth/login
 # Content-Type: application/json
 
 # {
-#   "name": "Tokoku Navara",
-#   "email": "tokoku@navara.com",
-#   "password": "senha123",
-#   "condition": "Desconforto"
+#   "email": "maria@exemplo.com",
+#   "password": "senha456"
 # }
 
-# POST http://localhost:3050/api/students/register
+# ## DISPONIBILIZAR HORÁRIO DE ATENDIMENTO
+# POST http://localhost:3050/api/availability
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwicm9sZSI6InN0dWRlbnQiLCJuYW1lIjoiTWFyaWEgRXN0dWRhbnRlIiwiaWF0IjoxNzQ4OTY0NTMxLCJleHAiOjE3NDkwNTA5MzF9.q53A2WmuMLxBp4gt4JwIl1eb0iV4Bb-tQHjf6P3Zn5Q
 # Content-Type: application/json
 
 # {
-#   "name": "jorge mathias",
-#   "email": "jorge@mathias.com",
-#   "password": "senha123",
-#   "area": "Psicologia"
+#   "date": "2025-22-02",
+#   "start_time": "09:00",
+#   "end_time": "10:00"
 # }
 
-# POST http://localhost:3050/api/auth/login
+# ## FAZER AGENDAMENTO
+# POST http://localhost:3050/api/appointments
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InBhdGllbnQiLCJuYW1lIjoiSm_Do28gUGFjaWVudGUiLCJpYXQiOjE3NDg5NzE0MjcsImV4cCI6MTc0OTA1NzgyN30.Euei7XaSaoW4H8dg2DH_esONXCoUlLMh5laE3tydvik
 # Content-Type: application/json
 
 # {
-#   "email": "tokoku@navara.com",
-#   "password": "senha123",
-#   "role": "patient"
+#   "student_id": 4,
+#   "date": "2025-11-02",
+#   "start_time": "09:00",
+#   "end_time": "10:00"
 # }
-
-# POST http://localhost:3050/api/auth/login
-# Content-Type: application/json
-
-# {
-#   "email": "tokoku@navara.com",
-#   "password": "senha123",
-#   "role": "patient"
-# }
-
-
-
-
+ 
