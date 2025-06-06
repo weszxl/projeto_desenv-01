@@ -1,38 +1,54 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const Student = require('../models/Student');
-const Patient = require('../models/Patient');
+const bcrypt = require('bcryptjs');
+const User = require('../models/User');
+const { generateToken } = require('../utils/jwt');
 
 class AuthController {
   static async login(req, res) {
-    const { email, password, role } = req.body;
-
+    const { email, password } = req.body;
+    
     try {
-      // determinar o modelo com base na role = estudante ou paciente
-      const Model = role === 'student' ? Student : Patient;
-      const user = await Model.findByEmail(email);
-
+      const user = await User.findByEmail(email);
       if (!user) {
-        return res.status(401).json({ error: "Credenciais inválidas" });
+        return res.status(401).json({ error: 'credenciais inválidas' });
       }
-
-      const passwordMatch = await bcrypt.compare(password, user.password);
-      if (!passwordMatch) {
-        return res.status(401).json({ error: "Credenciais inválidas" });
+      
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ error: 'credenciais inválidas' });
       }
-
-      // gerar token JWT de 3 horas
-      const token = jwt.sign(
-        { id: user.id, role },
-        process.env.JWT_SECRET,
-        { expiresIn: '3h' }
-      );
-
-      res.json({ token });
-
+      
+      const token = generateToken({
+        id: user.id,
+        role: user.role,
+        name: user.name
+      });
+      
+      res.json({
+        token,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role
+        }
+      });
     } catch (error) {
       console.error('Erro no login:', error);
-      res.status(500).json({ error: "Erro no servidor durante o login" });
+      res.status(500).json({ error: 'ERRO NO SERVIDOR' });
+    }
+  }
+
+  static async getCurrentUser(req, res) {
+    try {
+      const user = await User.findById(req.user.id);
+      if (!user) {
+        return res.status(404).json({ error: 'usuário não encontrado' });
+      }
+      
+      const { password, ...userData } = user;
+      res.json(userData);
+    } catch (error) {
+      res.status(500).json({ error: 'erro na busca de usuário' });
     }
   }
 }

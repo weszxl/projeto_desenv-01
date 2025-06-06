@@ -1,9 +1,9 @@
 const { google } = require('googleapis');
 
 // Substitua com suas credenciais do Google Cloud Console
-const CLIENT_ID = 'adicionar client id do google cloud console aqui';
-const CLIENT_SECRET = 'aicionar client secret aqui';
-const REDIRECT_URI = 'adicionar redirect uri aqui';
+const CLIENT_ID = '237873110313-qheajct2ukh61ru2sbr7n1hd98psjr38.apps.googleusercontent.com';
+const CLIENT_SECRET = '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';
+const REDIRECT_URI = 'http://localhost:3050/auth/google/callback';
 
 const oauth2Client = new google.auth.OAuth2(
   CLIENT_ID,

@@ -1,44 +1,38 @@
 const { google } = require('googleapis');
-const OAuth2 = google.auth.OAuth2;
 
-const oauth2Client = new OAuth2(
+const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
   process.env.GOOGLE_REDIRECT_URI
 );
 
 oauth2Client.setCredentials({
-  refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
+  refresh_token: process.env.GOOGLE_REFRESH_TOKEN
 });
 
-class GoogleCalendarService {
-  static async createMeeting(startTime, endTime) {
-    try {
-      const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
+const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
 
-      const event = {
-        summary: 'Consulta Online',
-        start: { dateTime: startTime, timeZone: 'UTC' },
-        end: { dateTime: endTime, timeZone: 'UTC' },
-        conferenceData: {
-          createRequest: {
-            requestId: 'plataforma-saude-' + Date.now(),
-          },
-        },
-      };
-
-      const response = await calendar.events.insert({
-        calendarId: 'primary',
-        resource: event,
-        conferenceDataVersion: 1,
-      });
-
-      return response.data.hangoutLink;
-    } catch (error) {
-      console.error('Erro ao criar reunião:', error.message);
-      throw error;
+async function criarEvento({ summary, description, start, end, attendees }) {
+  const response = await calendar.events.insert({
+    calendarId: 'primary',
+    conferenceDataVersion: 1,
+    requestBody: {
+      summary,
+      description,
+      start: { dateTime: start, timeZone: 'America/Sao_Paulo' },
+      end: { dateTime: end, timeZone: 'America/Sao_Paulo' },
+      attendees,
+      conferenceData: {
+        createRequest: {
+          requestId: `${Date.now()}`,
+          conferenceSolutionKey: { type: 'hangoutsMeet' }
+        }
+      }
     }
-  }
+  });
+
+  return response.data.hangoutLink;
 }
 
-module.exports = GoogleCalendarService;
+module.exports = { criarEvento };
+

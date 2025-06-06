@@ -1,30 +1,30 @@
-// arquivo de teste para enviar e-mail
-// especificar email e senha de aplicativo
-// em .env nos campos EMAIL_USER e EMAIL_PASSWORD
-
+require('dotenv').config();
 const nodemailer = require('nodemailer');
-console.log('Email User:', process.env.EMAIL_USER); 
-console.log('Email Password:', process.env.EMAIL_PASSWORD ? '(senha)' : 'Não definido'); 
-
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  });
-  
-  const sendAppointmentConfirmation = async (to, startTime,) => {
-    const mailOptions = {
-      from: 'noreply@plataforma.com',
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASSWORD
+  }
+});
+
+async function sendEmail({ to, subject, html }) {
+  try {
+    await transporter.sendMail({
+      from: `"Atendimento Plataforma" <${process.env.EMAIL_USER}>`,
       to,
-      subject: 'Horário Agendado',
-      html: `<p>Reunião agendada para ${new Date(startTime).toLocaleString()}.</p>`,
-    };
-  
-    await transporter.sendMail(mailOptions);
-  };
-  
-  module.exports = { sendAppointmentConfirmation };
+      subject,
+      html
+    });
+    console.log(`email enviado para ${to}`);
+  } catch (err) {
+    console.error('erro no envio:', err);
+  }
+}
+
+module.exports = sendEmail;
+
+
+
   
