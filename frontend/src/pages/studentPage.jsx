@@ -1,104 +1,86 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/header';
 import Footer from '../components/footer';
-import { api } from '../api/axiosConfig'; 
+// import { api } from '../api/axiosConfig'; 
+
 
 const StudentPage = () => {
-  const [date, setDate] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [mensagem, setMensagem] = useState('');
-  const [erro, setErro] = useState('');
+  const [selectedTab, setSelectedTab] = useState('agendadas'); // seleção de abas
 
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (!user || user.role !== 'student') {
-      window.location.href = '/nao-autorizado';
-    }
-  }, []);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMensagem('');
-    setErro('');
-
-    try {
-      const res = await api.post('/api/availability', {
-        date,
-        start_time: startTime,
-        end_time: endTime,
-      });
-
-      setMensagem(`horário adicionado!`);
-      setDate('');
-      setStartTime('');
-      setEndTime('');
-    } catch (err) {
-      console.error(err);
-      setErro(err.response?.data?.error || 'erro ao inserir disponibilidade');
+  const renderContent = () => {
+    switch (selectedTab) {
+      case 'agendadas':
+        return (
+          <div className="text-center">
+            <img
+              src="/images/no-schedule.png"
+              alt="Sem consultas agendadas"
+              className="mx-auto mb-6"
+            />
+            <p className="text-lg font-semibold text-gray-700">
+              Você não tem consultas agendadas
+            </p>
+            <p className="text-gray-500">
+              Estamos aqui para te ajudar, agende uma consulta para manter em dia os cuidados com a saúde e o bem-estar.
+            </p>
+          </div>
+        );
+      case 'realizadas':
+        return (
+          <div className="text-center">
+            <p className="text-lg font-semibold text-gray-700">
+              Você não tem consultas realizadas
+            </p>
+            <p className="text-gray-500">
+              Consulte seu histórico de consultas para acompanhar os atendimentos realizados.
+            </p>
+          </div>
+        );
+      case 'canceladas':
+        return (
+          <div className="text-center">
+            <p className="text-lg font-semibold text-gray-700">
+              Você não tem consultas canceladas
+            </p>
+            <p className="text-gray-500">
+              Caso tenha dúvidas sobre consultas canceladas, entre em contato com o suporte.
+            </p>
+          </div>
+        );
+      default:
+        return null;
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-
       <main className="flex-grow bg-blue-50 p-6">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl font-bold text-blue-700 mb-4">Página do Estudante</h1>
-          <p className="text-lg text-gray-600 mb-6">
-            Informe os horários disponíveis para atendimento.
-          </p>
-
-          <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Data</label>
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                required
-                className="w-full border rounded px-4 py-2"
-              />
-            </div>
-
-            <div className="flex gap-4">
-              <div className="w-1/2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Hora de início</label>
-                <input
-                  type="time"
-                  value={startTime}
-                  onChange={(e) => setStartTime(e.target.value)}
-                  required
-                  className="w-full border rounded px-4 py-2"
-                />
-              </div>
-
-              <div className="w-1/2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Hora de término</label>
-                <input
-                  type="time"
-                  value={endTime}
-                  onChange={(e) => setEndTime(e.target.value)}
-                  required
-                  className="w-full border rounded px-4 py-2"
-                />
-              </div>
-            </div>
-
+          <h1 className="text-3xl font-bold text-blue-700 mb-4">Olá "NOME", aqui estão suas consultas</h1>
+          <nav className="flex justify-center space-x-8 border-b mb-4">
             <button
-              type="submit"
-              className="bg-gradient-to-r from-[#79FFF4] to-[#72FFDE] text-white font-semibold py-2 px-6 rounded hover:opacity-90 transition"
+              className={`pb-2 ${selectedTab === 'agendadas' ? 'border-b-2 border-purple-600 font-semibold' : 'text-gray-600'}`}
+              onClick={() => setSelectedTab('agendadas')}
             >
-              Salvar Horário
+              Agendadas
             </button>
-
-            {mensagem && <p className="text-green-600">{mensagem}</p>}
-            {erro && <p className="text-red-600">{erro}</p>}
-          </form>
+            <button
+              className={`pb-2 ${selectedTab === 'realizadas' ? 'border-b-2 border-purple-600 font-semibold' : 'text-gray-600'}`}
+              onClick={() => setSelectedTab('realizadas')}
+            >
+              Realizadas
+            </button>
+            <button
+              className={`pb-2 ${selectedTab === 'canceladas' ? 'border-b-2 border-purple-600 font-semibold' : 'text-gray-600'}`}
+              onClick={() => setSelectedTab('canceladas')}
+            >
+              Canceladas
+            </button>
+          </nav>
+          <div className="py-10">{renderContent()}</div>
         </div>
       </main>
-
       <Footer />
     </div>
   );
