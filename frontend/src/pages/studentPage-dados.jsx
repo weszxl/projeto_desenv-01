@@ -119,7 +119,7 @@ const StudentPageDados = () => {
           <h1 className="text-3xl font-bold text-blue-700 mb-2">Editar Dados do Estudante</h1>
           <p className="text-gray-600 mb-6">Atualize as informações pessoais e acadêmicas do estudante</p>
           <div className="bg-white rounded-lg shadow px-5 py-7">
-            {/* Tabs */}
+            {/* TABS */}
             <div className="flex border-b mb-8">
               <button
                 className={`py-2 px-6 font-medium focus:outline-none ${

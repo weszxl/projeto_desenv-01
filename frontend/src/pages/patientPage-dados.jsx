@@ -53,7 +53,6 @@ const PatientPageDados = () => {
           <h1 className="text-3xl font-bold text-blue-700 mb-2">Editar Dados do Paciente</h1>
           <p className="text-gray-600 mb-6">Atualize suas informações pessoais</p>
           <div className="bg-white rounded-lg shadow px-5 py-7">
-            {/* Tab única: Dados Pessoais */}
             <div className="flex border-b mb-8">
               <button
                 className={`py-2 px-6 font-medium focus:outline-none border-b-2 border-purple-600 text-purple-700`}
