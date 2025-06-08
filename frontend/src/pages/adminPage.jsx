@@ -1,120 +1,166 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/header';
 import Footer from '../components/footer';
-import { api } from '../api/axiosConfig'; 
+import NewStudent from '../components/newStudent';
+// import { api } from '../api/axiosConfig'; 
 
 const AdminPage = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [mensagem, setMensagem] = useState('');
-  const [erro, setErro] = useState('');
+  // const navigate = useNavigate();
+  // useEffect(() => {
+  //   if (!isAdmin) navigate('/unauthorized');
+  // }, [isAdmin, navigate]);
 
-  useEffect(() => {
-    // verificar se é admin
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (!user || user.role !== 'admin') {
-      window.location.href = '/nao-autorizado';
-    }
-  }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMensagem('');
-    setErro('');
+  const [busca, setBusca] = useState('');
+  const [filtroTipo, setFiltroTipo] = useState('Todos os tipos');
+  const [filtroStatus, setFiltroStatus] = useState('Todos os status');
 
-    try {
-      const res = await api.post('/users/register/student', {
-        name,
-        email,
-        password,
-      });
+  const tiposUsuario = [
+    'Estudante',
+    'Professor',
+    // INTEGRAÇÃO
+  ];
 
-      setMensagem(`Estudante ${res.data.user.name} cadastrado!`);
-      setName('');
-      setEmail('');
-      setPassword('');
-    } catch (err) {
-      console.error(err);
-      setErro(err.response?.data?.error || 'erro no cadastro de estudante');
-    }
+  const [showNewStudent, setShowNewStudent] = useState(false);
+
+  const handleSaveStudent = (studentData) => {
+    // INTEGRAÇÃO
+    setShowNewStudent(false);
   };
 
-  return (
-    <div className="min-h-screen flex flex-col">
 
-      
+
+return (
+    <div className="min-h-screen flex flex-col bg-blue-50">
       <Header />
+      <div className="flex flex-1">
+        {/* MENU LATERAL */}
+        <aside className="w-60 bg-white border-r border-gray-100 min-h-full pt-8">
+          <nav className="flex flex-col gap-1">
+            <a
+              href="#"
+              className="flex items-center px-8 py-3 font-medium text-gray-700 hover:bg-purple-50 transition"
+            >
+              <span className="mr-3">
+                <svg width="20" height="20" fill="none" className="inline-block text-gray-400" viewBox="0 0 24 24"><path stroke="currentColor" strokeWidth="1.5" d="M3 13.5C3 9.35786 6.35786 6 10.5 6H13.5C17.6421 6 21 9.35786 21 13.5V19.5C21 20.3284 20.3284 21 19.5 21H4.5C3.67157 21 3 20.3284 3 19.5V13.5Z"/></svg>
+              </span>
+              Dashboard
+            </a>
+            <a
+              href="#"
+              className="flex items-center px-8 py-3 font-medium text-purple-700 bg-purple-100 rounded-l-lg"
+            >
+              <span className="mr-3">
+                <svg width="20" height="20" fill="none" className="inline-block text-purple-500" viewBox="0 0 24 24"><path stroke="currentColor" strokeWidth="1.5" d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12ZM21 20C21 16.134 16.4183 14 12 14C7.58172 14 3 16.134 3 20"/></svg>
+              </span>
+              Usuários
+            </a>
+            <a
+              href="#"
+              className="flex items-center px-8 py-3 font-medium text-gray-700 hover:bg-purple-50 transition"
+            >
+              <span className="mr-3">
+                <svg width="20" height="20" fill="none" className="inline-block text-gray-400" viewBox="0 0 24 24"><path stroke="currentColor" strokeWidth="1.5" d="M7 7H17M7 12H17M7 17H13"/></svg>
+              </span>
+              Relatórios
+            </a>
+            <a
+              href="#"
+              className="flex items-center px-8 py-3 font-medium text-gray-700 hover:bg-purple-50 transition"
+            >
+              <span className="mr-3">
+                <svg width="20" height="20" fill="none" className="inline-block text-gray-400" viewBox="0 0 24 24"><path stroke="currentColor" strokeWidth="1.5" d="M12 15V12M12 9H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"/></svg>
+              </span>
+              Configurações
+            </a>
+          </nav>
+        </aside>
 
-      <main className="flex-1 px-6 py-10 max-w-xl mx-auto w-full">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">
-          Painel do Administrador
-        </h1>
+        <main className="flex-1 p-10">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center mb-8">
+              <h2 className="text-2xl font-semibold text-gray-800">Gerenciamento de Usuários</h2>
+              <div className="flex gap-3">
+                <button
+                  className="flex items-center gap-2 bg-purple-700 hover:bg-purple-800 text-white font-semibold px-6 py-2 rounded-lg shadow transition"
+                  onClick={() => setShowNewStudent(true)}
+                >
+                  + Novo Estudante
+                </button>
+                <button className="flex items-center gap-2 bg-purple-700 hover:bg-purple-800 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
+                  + Novo Professor
+                </button>
+              </div>
+            </div>
 
-        <section className="bg-white border rounded-lg shadow p-6">
-          <h2 className="text-lg font-semibold text-gray-700 mb-4">
-            Cadastrar novo estudante
-          </h2>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Nome completo
-              </label>
+            {/* FILTROS DE BUSCA */}
+            <div className="flex flex-col md:flex-row items-center gap-3 mb-7">
               <input
                 type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                className="w-full border rounded px-4 py-2"
+                placeholder="Buscar usuários..."
+                className="flex-1 px-4 py-2 rounded border border-gray-200 bg-gray-50"
+                value={busca}
+                onChange={e => setBusca(e.target.value)}
               />
+              <select
+                className="px-3 py-2 rounded border border-gray-200 bg-gray-50"
+                value={filtroTipo}
+                onChange={e => setFiltroTipo(e.target.value)}
+              >
+                <option>Todos os tipos</option>
+                {tiposUsuario.map(tipo => (
+                  <option key={tipo}>{tipo}</option>
+                ))}
+              </select>
+              <select
+                className="px-3 py-2 rounded border border-gray-200 bg-gray-50"
+                value={filtroStatus}
+                onChange={e => setFiltroStatus(e.target.value)}
+              >
+                <option>Todos os status</option>
+                <option>Ativo</option>
+                <option>Inativo</option>
+              </select>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full border rounded px-4 py-2"
-              />
+            <div className="bg-white rounded-lg shadow border border-gray-100 px-0 md:px-4 py-3">
+              <table className="w-full min-w-max divide-y divide-gray-100">
+                <thead>
+                  <tr className="text-gray-400 text-sm">
+                    <th className="font-semibold text-left p-3">Nome</th>
+                    <th className="font-semibold text-left p-3">Email</th>
+                    <th className="font-semibold text-left p-3">Tipo</th>
+                    <th className="font-semibold text-left p-3">Status</th>
+                    <th className="font-semibold text-left p-3">Último Acesso</th>
+                    <th className="font-semibold text-left p-3">Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* USERS EXIBIDOS - INTEGRAÇÃO */}
+                  <tr>
+                    <td colSpan={6}>
+                      <div className="text-center text-gray-400 py-10">Nenhum usuário encontrado.</div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div className="flex justify-between items-center py-2 px-4">
+                <span className="text-xs text-gray-400">Mostrando 0 de 0 usuários</span>
+                <div className="flex gap-1">
+                  <button className="rounded px-3 py-1 text-sm text-gray-500 border border-gray-200 bg-gray-50" disabled>Anterior</button>
+                  <button className="rounded px-3 py-1 text-sm text-white bg-purple-700">1</button>
+                  <button className="rounded px-3 py-1 text-sm text-gray-500 border border-gray-200 bg-gray-50" disabled>Próximo</button>
+                </div>
+              </div>
             </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Senha
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full border rounded px-4 py-2"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="bg-gradient-to-r from-[#79FFF4] to-[#72FFDE] text-white font-semibold py-2 px-6 rounded hover:opacity-90 transition"
-            >
-              Cadastrar Estudante
-            </button>
-
-            {mensagem && <p className="text-green-600 mt-2">{mensagem}</p>}
-            {erro && <p className="text-red-600 mt-2">{erro}</p>}
-            
-          </form>
-        </section>
-      </main>
-
-      {/* FOOTER (COMPONENT) */}
+          </div>
+        </main>
+        <NewStudent open={showNewStudent} onClose={() => setShowNewStudent(false)} onSave={handleSaveStudent} />
+      </div>
       <Footer />
     </div>
   );
 };
 
 export default AdminPage;
-
