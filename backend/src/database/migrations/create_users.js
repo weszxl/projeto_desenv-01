@@ -3,8 +3,9 @@ exports.up = function(knex) {
     table.increments('id').primary();
     table.string('name').notNullable();
     table.string('email').unique().notNullable();
-    table.string('password').notNullable();
+    table.string('password_hash').notNullable();
     table.enum('role', ['admin', 'student', 'patient']).notNullable();
+    table.string('cpf');
     table.timestamps(true, true);
   });
 };
