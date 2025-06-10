@@ -20,6 +20,8 @@ const StudentPageDados = () => {
   });
 
   // form dados acadêmicos
+  const [comprovante, setComprovante] = useState(null);
+  const [comprovantePreview, setComprovantePreview] = useState(null);
   const [formAcademico, setFormAcademico] = useState({
     curso: '',
     instituicao: '',
@@ -41,6 +43,13 @@ const StudentPageDados = () => {
     const file = e.target.files[0];
     setFoto(file);
     if (file) setPreview(URL.createObjectURL(file));
+  };
+
+  // comprovante de matrícula
+  const handleComprovanteChange = (e) => {
+    const file = e.target.files[0];
+    setComprovante(file);
+    if (file) setComprovantePreview(URL.createObjectURL(file));
   };
 
   // dados pessoais
@@ -78,6 +87,8 @@ const StudentPageDados = () => {
       previsaoConclusao: '',
       observacoes: ''
     });
+    setComprovante(null);
+    setComprovantePreview(null);
   };
 
   const handleSubmitPessoal = (e) => {
@@ -156,7 +167,6 @@ const StudentPageDados = () => {
             {/* DADOS PESSOAIS */}
             {selectedTab === 'pessoais' && (
               <form className="flex flex-col items-center" onSubmit={handleSubmitPessoal}>
-                {/* ... (mantido igual resposta anterior) ... */}
                 <div className="flex flex-col items-center mb-8 w-full">
                   <div className="relative">
                     <label htmlFor="foto-upload" className="cursor-pointer">
@@ -231,22 +241,53 @@ const StudentPageDados = () => {
             {/* DADOS ACADÊMICOS */}
             {selectedTab === 'academicos' && (
               <form className="flex flex-col items-center" onSubmit={handleSubmitAcademico}>
+                <div className="flex flex-col items-center mb-6 w-full">
+                  <div className="relative">
+                    <label htmlFor="comprovante-upload" className="cursor-pointer">
+                      <div className="w-40 h-20 rounded-lg bg-gray-100 border-2 border-gray-200 flex flex-col items-center justify-center overflow-hidden">
+                        {comprovantePreview ? (
+                          <span className="text-green-600 font-semibold text-sm">Arquivo selecionado</span>
+                        ) : (
+                          <div className="flex flex-col items-center justify-center h-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-gray-400 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11v6m0 0v-6m0 6h6m-6 0H6M12 11V5m0 6l4-4m-4 4L8 7"/>
+                            </svg>
+                            <span className="text-gray-400 text-xs text-center">Comprovante de matrícula</span>
+                            <span className="text-gray-400 text-xs text-center">PDF, JPG, PNG (máx. 5MB)</span>
+                          </div>
+                        )}
+                      </div>
+                      <span className="absolute bottom-0 right-0 bg-purple-600 text-white rounded-full p-1 border-2 border-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                        </svg>
+                      </span>
+                    </label>
+                    <input
+                      id="comprovante-upload"
+                      type="file"
+                      accept="application/pdf,image/png,image/jpeg"
+                      className="hidden"
+                      onChange={handleComprovanteChange}
+                    />
+                  </div>
+                  <span className="text-xs text-gray-400 mt-2">
+                    Clique para anexar o comprovante de matrícula
+                  </span>
+                  {comprovante && (
+                    <span className="text-xs text-green-600 mt-1">{comprovante.name}</span>
+                  )}
+                </div>
+
+                <div className="w-full mb-3">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Instituição de Ensino *</label>
+                  <input type="text" name="instituicao" value={formAcademico.instituicao} onChange={handleChangeAcademico} placeholder="Digite o nome da instituição" className="w-full border rounded px-4 py-2" required />
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full mb-3">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Curso *</label>
                     <input type="text" name="curso" value={formAcademico.curso} onChange={handleChangeAcademico} placeholder="Digite o nome do curso" className="w-full border rounded px-4 py-2" required />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Instituição de Ensino *</label>
-                    <input type="text" name="instituicao" value={formAcademico.instituicao} onChange={handleChangeAcademico} placeholder="Digite o nome da instituição" className="w-full border rounded px-4 py-2" required />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Período/Semestre Atual *</label>
-                    <input type="text" name="periodo" value={formAcademico.periodo} onChange={handleChangeAcademico} placeholder="Ex: 5º semestre" className="w-full border rounded px-4 py-2" required />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Número de Matrícula *</label>
-                    <input type="text" name="matricula" value={formAcademico.matricula} onChange={handleChangeAcademico} placeholder="Digite o número de matrícula" className="w-full border rounded px-4 py-2" required />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Situação Acadêmica *</label>
@@ -257,19 +298,31 @@ const StudentPageDados = () => {
                       <option value="Cancelado">Cancelado</option>
                     </select>
                   </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full mb-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Período/Semestre Atual *</label>
+                    <input type="text" name="periodo" value={formAcademico.periodo} onChange={handleChangeAcademico} placeholder="Ex: 5º semestre" className="w-full border rounded px-4 py-2" required />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Número de Matrícula *</label>
+                    <input type="text" name="matricula" value={formAcademico.matricula} onChange={handleChangeAcademico} placeholder="Digite o número de matrícula" className="w-full border rounded px-4 py-2" required />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full mb-3">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Data de Ingresso *</label>
                     <input type="date" name="ingresso" value={formAcademico.ingresso} onChange={handleChangeAcademico} className="w-full border rounded px-4 py-2" required />
                   </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Previsão de Conclusão *</label>
+                    <input type="date" name="previsaoConclusao" value={formAcademico.previsaoConclusao} onChange={handleChangeAcademico} className="w-full border rounded px-4 py-2" required />
+                  </div>
                 </div>
-                <div className="w-full mb-3">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Previsão de Conclusão</label>
-                  <input type="text" name="previsaoConclusao" value={formAcademico.previsaoConclusao} onChange={handleChangeAcademico} className="w-full border rounded px-4 py-2" />
-                </div>
-                <div className="w-full mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Observações Acadêmicas</label>
-                  <textarea name="observacoes" value={formAcademico.observacoes} onChange={handleChangeAcademico} className="w-full border rounded px-4 py-2 min-h-[64px]" />
-                </div>
+
+                
                 <div className="flex flex-col md:flex-row w-full gap-3">
                   <button type="submit" className="flex-1 py-2 rounded bg-purple-700 text-white font-semibold hover:bg-purple-800 transition mb-2 md:mb-0">Salvar Alterações</button>
                   <button type="button" className="flex-1 py-2 rounded border border-gray-300 text-gray-500 font-semibold hover:bg-gray-50 transition" onClick={handleCancelarAcademico}>Cancelar</button>
