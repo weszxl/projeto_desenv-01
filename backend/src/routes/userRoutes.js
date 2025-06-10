@@ -3,8 +3,11 @@ const router = express.Router();
 const UserController = require('../controllers/UserController');
 const authMiddleware = require('../middlewares/auth');
 
-router.post('/register/patient', UserController.registerPatient);
+router.post('/register', UserController.registerPatient);
 
-router.post('/register/student', authMiddleware, UserController.registerStudent);
+router.use(authMiddleware);
+router.post('/register/student', UserController.registerStudent);
+router.get('/users', UserController.listUsers);
+router.get('/users/:id', UserController.getUserById);
 
 module.exports = router;
