@@ -52,6 +52,11 @@ const User = {
 
   async validatePassword(password, password_hash) {
     return bcrypt.compare(password, password_hash);
+  },
+
+  async isEmailTaken(email) {
+    const user = await db('users').where({ email }).first();
+    return !!user;
   }
 };
 

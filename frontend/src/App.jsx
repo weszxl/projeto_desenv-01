@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
+
 import HomePage from './pages/homepage';
 
 import RegisterPage from './pages/registerPage';
@@ -34,6 +35,7 @@ function App() {
         <Route path="/studentPage-dados" element={<StudentPageDados />} />
 
         <Route path="/adminPage" element={<AdminPage />} />
+        
 
         <Route path="/voluntaryPage" element={<VoluntaryPage />} />
 

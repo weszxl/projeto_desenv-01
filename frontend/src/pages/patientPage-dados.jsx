@@ -1,11 +1,58 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/header';
 import Footer from '../components/footer';
-// import { api } from '../api/axiosConfig'; 
+import { api } from '../api/axiosConfig'; 
+
+const formatPhone = (value) => {
+  return value
+    .replace(/\D/g, '')
+    .replace(/^(\d{2})(\d)/g, '($1) $2')
+    .replace(/(\d{5})(\d{1,4})$/, '$1-$2')
+    .slice(0, 15);
+};
+
+const formatCPF = (value) => {
+  return value
+    .replace(/\D/g, '')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d{1,2})$/, '$1.$2')
+    .slice(0, 14);
+};
+
+const formatCEP = (value) => {
+  return value
+    .replace(/\D/g, '')
+    .replace(/(\d{5})(\d{1,3})$/, '$1-$2')
+    .slice(0, 9);
+};
+
+const formatDateBR = (value) => {
+  return value
+    .replace(/\D/g, '')
+    .replace(/(\d{2})(\d)/, '$1/$2')
+    .replace(/(\d{2})(\d)/, '$1/$2')
+    .slice(0, 10);
+};
+
+const isoToBR = (isoDate) => {
+  if (!isoDate) return '';
+  const [year, month, day] = isoDate.split('T')[0].split('-');
+  return `${day}/${month}/${year}`;
+};
+
+const brToISO = (dateBR) => {
+  if (!dateBR) return '';
+  const [day, month, year] = dateBR.split('/');
+  if (!day || !month || !year) return '';
+  return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+};
 
 const PatientPageDados = () => {
   const [foto, setFoto] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [success, setSuccess] = useState(false);
   const [formPessoal, setFormPessoal] = useState({
     nome: '',
     email: '',
@@ -16,6 +63,29 @@ const PatientPageDados = () => {
     sobre: ''
   });
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const { data } = await api.get('/patient/profile');
+        setFormPessoal({
+          nome: data.nome || '',
+          email: data.email || '',
+          telefone: data.phone || '',
+          cpf: data.cpf || '',
+          nascimento: data.birth ? isoToBR(data.birth) : '',
+          cep: data.cep || '',
+          sobre: data.about || ''
+        });
+        // setPreview(data.photo_url);
+      } catch (err) {
+        console.error('Erro ao buscar perfil:', err);
+      }
+    };
+    fetchProfile();
+  }, []);
+
   const handleFotoChange = (e) => {
     const file = e.target.files[0];
     setFoto(file);
@@ -23,7 +93,14 @@ const PatientPageDados = () => {
   };
 
   const handleChangePessoal = (e) => {
-    setFormPessoal({ ...formPessoal, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    let newValue = value;
+    if (name === 'telefone') newValue = formatPhone(value);
+    if (name === 'cpf') newValue = formatCPF(value);
+    if (name === 'cep') newValue = formatCEP(value);
+    if (name === 'nascimento') newValue = formatDateBR(value);
+
+    setFormPessoal({ ...formPessoal, [name]: newValue });
   };
 
   const handleCancelarPessoal = () => {
@@ -38,11 +115,28 @@ const PatientPageDados = () => {
     });
     setFoto(null);
     setPreview(null);
+    setSuccess(false);
+    navigate('/patientPage');
   };
 
-  const handleSubmitPessoal = (e) => {
+  const handleSubmitPessoal = async (e) => {
     e.preventDefault();
-    // integração
+    try {
+      await api.put('/patient/profile', {
+        nome: formPessoal.nome,
+        email: formPessoal.email,
+        cpf: formPessoal.cpf,
+        phone: formPessoal.telefone,
+        birth: brToISO(formPessoal.nascimento),
+        cep: formPessoal.cep,
+        about: formPessoal.sobre
+      });
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 4000);
+    } catch (err) {
+      setSuccess(false);
+      console.error('Erro ao atualizar perfil:', err);
+    }
   };
 
   return (
@@ -62,7 +156,12 @@ const PatientPageDados = () => {
               </button>
             </div>
 
-            {/* DADOS PESSOAIS */}
+            {success && (
+              <div className="mb-4 bg-green-100 text-green-800 px-4 py-2 rounded border border-green-200 transition">
+                Dados salvos com sucesso!
+              </div>
+            )}
+
             <form className="flex flex-col items-center" onSubmit={handleSubmitPessoal}>
               <div className="flex flex-col items-center mb-8 w-full">
                 <div className="relative">
@@ -109,19 +208,51 @@ const PatientPageDados = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Telefone/Contato *</label>
-                  <input type="tel" name="telefone" value={formPessoal.telefone} onChange={handleChangePessoal} className="w-full border rounded px-4 py-2" required />
+                  <input
+                    type="tel"
+                    name="telefone"
+                    value={formPessoal.telefone}
+                    onChange={handleChangePessoal}
+                    className="w-full border rounded px-4 py-2"
+                    required
+                    placeholder="(99) 99999-9999"
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">CPF *</label>
-                  <input type="text" name="cpf" value={formPessoal.cpf} onChange={handleChangePessoal} className="w-full border rounded px-4 py-2" required />
+                  <input
+                    type="text"
+                    name="cpf"
+                    value={formPessoal.cpf}
+                    onChange={handleChangePessoal}
+                    className="w-full border rounded px-4 py-2"
+                    required
+                    placeholder="123.456.789.12"
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Data de Nascimento *</label>
-                  <input type="date" name="nascimento" value={formPessoal.nascimento} onChange={handleChangePessoal} className="w-full border rounded px-4 py-2" required />
+                  <input
+                    type="text"
+                    name="nascimento"
+                    value={formPessoal.nascimento}
+                    onChange={handleChangePessoal}
+                    className="w-full border rounded px-4 py-2"
+                    required
+                    placeholder="dd/mm/aaaa"
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">CEP *</label>
-                  <input type="text" name="cep" value={formPessoal.cep} onChange={handleChangePessoal} className="w-full border rounded px-4 py-2" required />
+                  <input
+                    type="text"
+                    name="cep"
+                    value={formPessoal.cep}
+                    onChange={handleChangePessoal}
+                    className="w-full border rounded px-4 py-2"
+                    required
+                    placeholder="12345-123"
+                  />
                 </div>
               </div>
               <div className="w-full mb-6">

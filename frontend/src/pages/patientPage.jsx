@@ -2,11 +2,52 @@ import React, { useEffect, useState } from 'react';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import AppointmentMenu from '../components/appointmentMenu';
-// import { api } from '../api/axiosConfig'; 
+import WarningCompleteProfile from '../components/warningCompleteProfile'; 
+import { api } from '../api/axiosConfig';
+import { useNavigate } from 'react-router-dom';
 
 const PatientPage = () => {
   const [selectedTab, setSelectedTab] = useState('agendadas');
   const [showAppointmentMenu, setShowAppointmentMenu] = useState(false);
+  const [profile, setProfile] = useState(null);
+  const [profileLoading, setProfileLoading] = useState(true);
+  const [showWarning, setShowWarning] = useState(false); 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const { data } = await api.get('/patient/profile');
+        setProfile(data);
+      } catch (err) {
+        setProfile(null);
+      } finally {
+        setProfileLoading(false);
+      }
+    };
+    fetchProfile();
+  }, []);
+
+  const isProfileComplete = profile &&
+    profile.nome?.trim() &&
+    profile.email?.trim() &&
+    profile.phone?.trim() &&
+    profile.cpf?.trim() &&
+    (profile.birth?.trim() || profile.nascimento?.trim()) &&
+    profile.cep?.trim();
+
+  const handleAgendarConsulta = () => {
+    if (isProfileComplete) {
+      setShowAppointmentMenu(true);
+    } else {
+      setShowWarning(true);
+    }
+  };
+
+  const handleGoToProfile = () => {
+    setShowWarning(false);
+    navigate('/patientPage-dados');
+  };
 
   const renderContent = () => {
     switch (selectedTab) {
@@ -27,7 +68,8 @@ const PatientPage = () => {
             </p>
             <button
               className="bg-purple-700 hover:bg-purple-800 transition text-white font-semibold py-2 px-7 rounded"
-              onClick={() => setShowAppointmentMenu(true)}
+              onClick={handleAgendarConsulta}
+              disabled={profileLoading}
             >
               Agendar consulta
             </button>
@@ -101,6 +143,11 @@ const PatientPage = () => {
         </div>
       </main>
       <AppointmentMenu open={showAppointmentMenu} onClose={() => setShowAppointmentMenu(false)} />
+      <WarningCompleteProfile
+        open={showWarning}
+        onClose={() => setShowWarning(false)}
+        onGoToProfile={handleGoToProfile}
+      />
       <Footer />
     </div>
   );

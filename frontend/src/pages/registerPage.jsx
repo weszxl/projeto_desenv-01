@@ -36,28 +36,26 @@ const RegisterPage = () => {
     setLoading(true);
 
     try {
-      // enviar dados para o backend
-      const response = await api.post('/users/register/patient', {
+      await api.post('/users/register', {
         name: formData.name,
         email: formData.email,
         password: formData.password
       });
 
-      // redirecionamento para página de login
       navigate('/login', { 
         state: { 
-          success: 'cadastro realizado! faça login.' 
+          success: 'Cadastro realizado! Faça login.' 
         } 
       });
     } catch (err) {
       console.error('erro no cadastro:', err);
       
       if (err.response) {
-        setError(err.response.data.error || 'erro no de usuário');
+        setError(err.response.data.error || 'Erro ao cadastrar usuário');
       } else if (err.request) {
-        setError('problema de conexão com o servidor');
+        setError('Problema de conexão com o servidor');
       } else {
-        setError('ocorreu um erro ao fazer cadastro');
+        setError('Ocorreu um erro ao fazer cadastro');
       }
     } finally {
       setLoading(false);

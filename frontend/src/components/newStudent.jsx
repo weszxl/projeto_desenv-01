@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { api } from '../api/axiosConfig';
 
 const NewStudent = ({ open, onClose, onSave }) => {
   const [form, setForm] = useState({
@@ -9,28 +10,57 @@ const NewStudent = ({ open, onClose, onSave }) => {
   });
 
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   if (!open) return null;
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setError('');
+    setSuccess('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.nome || !form.email || !form.cpf || !form.senha) {
       setError('Preencha todos os campos obrigatórios.');
       return;
     }
-    // INTEGRAÇÃO
-    if (onSave) onSave(form);
-    setForm({
-      nome: '',
-      email: '',
-      cpf: '',
-      senha: ''
-    });
+
+    try {
+      const token = localStorage.getItem('token');
+      await api.post(
+        '/register/student',
+        {
+          nome: form.nome,
+          email: form.email,
+          cpf: form.cpf,
+          senha: form.senha
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      setSuccess('Estudante cadastrado com sucesso!');
+      setForm({
+        nome: '',
+        email: '',
+        cpf: '',
+        senha: ''
+      });
+      setTimeout(() => {
+        setSuccess('');
+        onSave && onSave();
+        onClose();
+      }, 1200);
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+        'Erro ao cadastrar estudante. Verifique se o CPF ou e-mail já existe.'
+      );
+    }
   };
 
   const handleClose = () => {
@@ -41,6 +71,7 @@ const NewStudent = ({ open, onClose, onSave }) => {
       senha: ''
     });
     setError('');
+    setSuccess('');
     onClose();
   };
 
@@ -101,6 +132,7 @@ const NewStudent = ({ open, onClose, onSave }) => {
             />
           </div>
           {error && <div className="text-red-500 text-xs mt-1">{error}</div>}
+          {success && <div className="text-green-600 text-xs mt-1">{success}</div>}
           <div className="flex gap-3 mt-3">
             <button
               type="submit"
