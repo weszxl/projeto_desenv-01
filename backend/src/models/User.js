@@ -59,7 +59,6 @@ const User = {
     return !!user;
   },
 
-  // MÉTODO ADICIONADO PARA LISTAR TODOS OS USUÁRIOS
   async findAll() {
     return db('users').select(['id', 'name', 'email', 'role', 'cpf', 'created_at']);
   }

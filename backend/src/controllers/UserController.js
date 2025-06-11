@@ -114,7 +114,6 @@ class UserController {
         return res.status(403).json({ error: 'acesso negado' });
       }
 
-      // Use o método findAll criado no model User!
       const users = await User.findAll();
       res.json(users);
     } catch (error) {

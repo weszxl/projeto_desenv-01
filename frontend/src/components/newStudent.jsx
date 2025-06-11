@@ -3,10 +3,10 @@ import { api } from '../api/axiosConfig';
 
 const NewStudent = ({ open, onClose, onSave }) => {
   const [form, setForm] = useState({
-    nome: '',
+    name: '',
     email: '',
     cpf: '',
-    senha: ''
+    password: ''
   });
 
   const [error, setError] = useState('');
@@ -22,33 +22,27 @@ const NewStudent = ({ open, onClose, onSave }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.nome || !form.email || !form.cpf || !form.senha) {
+    if (!form.name || !form.email || !form.cpf || !form.password) {
       setError('Preencha todos os campos obrigatórios.');
       return;
     }
 
     try {
-      const token = localStorage.getItem('token');
       await api.post(
-        '/register/student',
+        '/users/register/student',
         {
-          nome: form.nome,
+          name: form.name,
           email: form.email,
           cpf: form.cpf,
-          senha: form.senha
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+          password: form.password
         }
       );
       setSuccess('Estudante cadastrado com sucesso!');
       setForm({
-        nome: '',
+        name: '',
         email: '',
         cpf: '',
-        senha: ''
+        password: ''
       });
       setTimeout(() => {
         setSuccess('');
@@ -57,7 +51,7 @@ const NewStudent = ({ open, onClose, onSave }) => {
       }, 1200);
     } catch (err) {
       setError(
-        err.response?.data?.message ||
+        err.response?.data?.error ||
         'Erro ao cadastrar estudante. Verifique se o CPF ou e-mail já existe.'
       );
     }
@@ -65,10 +59,10 @@ const NewStudent = ({ open, onClose, onSave }) => {
 
   const handleClose = () => {
     setForm({
-      nome: '',
+      name: '',
       email: '',
       cpf: '',
-      senha: ''
+      password: ''
     });
     setError('');
     setSuccess('');
@@ -91,8 +85,8 @@ const NewStudent = ({ open, onClose, onSave }) => {
             <label className="block text-sm font-medium text-gray-700 mb-1">Nome *</label>
             <input
               type="text"
-              name="nome"
-              value={form.nome}
+              name="name"
+              value={form.name}
               onChange={handleChange}
               className="w-full border rounded px-4 py-2 bg-gray-50"
               required
@@ -124,8 +118,8 @@ const NewStudent = ({ open, onClose, onSave }) => {
             <label className="block text-sm font-medium text-gray-700 mb-1">Senha *</label>
             <input
               type="password"
-              name="senha"
-              value={form.senha}
+              name="password"
+              value={form.password}
               onChange={handleChange}
               className="w-full border rounded px-4 py-2 bg-gray-50"
               required
