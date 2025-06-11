@@ -6,6 +6,8 @@ const cookieParser = require('cookie-parser');
 // rotas
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
+const patientProfileRoutes = require('./routes/patientProfileRoutes');
+
 const availabilityRoutes = require('./routes/availabilityRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
 
@@ -24,6 +26,8 @@ app.use(cookieParser());
 // rotas
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
+app.use('/patient', patientProfileRoutes);
+
 app.use('/api/availability', availabilityRoutes);
 app.use('/api/appointments', appointmentRoutes);
 
