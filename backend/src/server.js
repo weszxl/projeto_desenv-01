@@ -63,5 +63,6 @@ app.get('/auth/google/callback', async (req, res) => {
 const PORT = process.env.PORT || 3050;
 app.listen(PORT, () => {
   console.log(`o serve ta online | http://localhost:${PORT}`);
+  console.log(`vo durmi`)
 });
 
