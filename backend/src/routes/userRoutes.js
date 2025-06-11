@@ -7,7 +7,7 @@ router.post('/register', UserController.registerPatient);
 
 router.use(authMiddleware);
 router.post('/register/student', UserController.registerStudent);
-router.get('/users', UserController.listUsers);
-router.get('/users/:id', UserController.getUserById);
+router.get('/', UserController.listUsers);
+router.get('/:id', UserController.getUserById);
 
 module.exports = router;

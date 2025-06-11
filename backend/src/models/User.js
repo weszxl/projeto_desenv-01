@@ -57,6 +57,10 @@ const User = {
   async isEmailTaken(email) {
     const user = await db('users').where({ email }).first();
     return !!user;
+  },
+
+  async findAll() {
+    return db('users').select(['id', 'name', 'email', 'role', 'cpf', 'created_at']);
   }
 };
 
