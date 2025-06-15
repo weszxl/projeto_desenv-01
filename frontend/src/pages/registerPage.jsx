@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import { api } from '../api/axiosConfig'; 
+import { api } from '../api/axiosConfig';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -22,14 +22,14 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    
+
     if (formData.password !== formData.confirmPassword) {
-      setError('As senhas não coincidem');
+      setError('As senhas não coincidem. Por favor, verifique.');
       return;
     }
-    
+
     if (formData.password.length < 6) {
-      setError('A senha deve ter pelo menos 6 caracteres');
+      setError('A senha deve ter pelo menos 6 caracteres.');
       return;
     }
 
@@ -42,20 +42,20 @@ const RegisterPage = () => {
         password: formData.password
       });
 
-      navigate('/login', { 
-        state: { 
-          success: 'Cadastro realizado! Faça login.' 
-        } 
+      navigate('/login', {
+        state: {
+          success: 'Cadastro realizado com sucesso! Agora você pode fazer login.'
+        }
       });
     } catch (err) {
       console.error('erro no cadastro:', err);
-      
+
       if (err.response) {
-        setError(err.response.data.error || 'Erro ao cadastrar usuário');
+        setError(err.response.data.error || 'Erro ao cadastrar usuário. Tente novamente.');
       } else if (err.request) {
-        setError('Problema de conexão com o servidor');
+        setError('Problema de conexão com o servidor. Verifique sua internet ou tente novamente.');
       } else {
-        setError('Ocorreu um erro ao fazer cadastro');
+        setError('Ocorreu um erro inesperado ao fazer o cadastro. Tente novamente mais tarde.');
       }
     } finally {
       setLoading(false);
@@ -63,37 +63,39 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* FORM */}
-      <div className="w-full md:w-1/2 flex flex-col justify-between p-8 bg-white">
-        <button onClick={() => navigate(-1)} className="mb-4">
-          <ArrowLeft size={24} />
+    <div className="min-h-screen flex bg-white">
+      <div className="w-full md:w-1/2 flex flex-col justify-center p-8 relative">
+        <button
+          onClick={() => navigate(-1)}
+          className="absolute top-8 left-8 text-gray-500 hover:text-gray-700 transition"
+        >
+          <ArrowLeft size={28} />
         </button>
 
-        <div className="flex-grow flex flex-col justify-center">
-          <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-1">
+        <div className="flex flex-col items-start px-8 py-16 w-full max-w-sm mx-auto">
+          <h1 className="text-4xl font-extrabold text-blue-700 mb-2">
             Olá!
           </h1>
-          <p className="text-lg md:text-xl text-blue-600 mb-6 font-medium">
+          <p className="text-2xl text-blue-700 mb-10 font-medium">
             Crie sua conta agora!
           </p>
 
-          <h2 className="text-xl md:text-2xl text-blue-600 font-semibold mb-8">
+          <h2 className="text-3xl font-bold text-blue-700 mb-10">
             Cadastre-se como paciente
           </h2>
 
           {error && (
-            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">
+            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md w-full">
               {error}
             </div>
           )}
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-8 w-full" onSubmit={handleSubmit}>
             <input
               type="text"
               name="name"
               placeholder="Insira seu Nome"
-              className="w-full border-b border-gray-400 py-2 focus:outline-none focus:border-blue-500 placeholder-gray-500"
+              className="w-full border border-gray-300 rounded-md py-3 px-3 focus:outline-none focus:border-blue-600 placeholder-gray-400 text-gray-800 text-lg bg-white"
               required
               value={formData.name}
               onChange={handleChange}
@@ -102,7 +104,7 @@ const RegisterPage = () => {
               type="email"
               name="email"
               placeholder="Insira seu Email"
-              className="w-full border-b border-gray-400 py-2 focus:outline-none focus:border-blue-500 placeholder-gray-500"
+              className="w-full border border-gray-300 rounded-md py-3 px-3 focus:outline-none focus:border-blue-600 placeholder-gray-400 text-gray-800 text-lg bg-white"
               required
               value={formData.email}
               onChange={handleChange}
@@ -111,7 +113,7 @@ const RegisterPage = () => {
               type="password"
               name="password"
               placeholder="Insira sua Senha"
-              className="w-full border-b border-gray-400 py-2 focus:outline-none focus:border-blue-500 placeholder-gray-500"
+              className="w-full border border-gray-300 rounded-md py-3 px-3 focus:outline-none focus:border-blue-600 placeholder-gray-400 text-gray-800 text-lg bg-white"
               required
               value={formData.password}
               onChange={handleChange}
@@ -120,7 +122,7 @@ const RegisterPage = () => {
               type="password"
               name="confirmPassword"
               placeholder="Confirme a Senha"
-              className="w-full border-b border-gray-400 py-2 focus:outline-none focus:border-blue-500 placeholder-gray-500"
+              className="w-full border border-gray-300 rounded-md py-3 px-3 focus:outline-none focus:border-blue-600 placeholder-gray-400 text-gray-800 text-lg bg-white"
               required
               value={formData.confirmPassword}
               onChange={handleChange}
@@ -128,31 +130,36 @@ const RegisterPage = () => {
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white font-bold py-3 rounded hover:bg-blue-700 transition disabled:opacity-50"
+              className="w-full bg-blue-700 text-white font-bold py-4 rounded hover:bg-blue-800 transition disabled:opacity-50 text-xl tracking-wide"
               disabled={loading}
             >
-              {loading ? 'Cadastrando...' : 'CADASTRAR'}
+              {loading ? 'CADASTRANDO...' : 'CADASTRAR'}
             </button>
           </form>
 
-          <div className="mt-4 text-sm text-center">
-            <Link to="/login" className="text-blue-600 hover:underline">
+          <div className="mt-6 text-base text-center w-full">
+            <Link to="/login" className="text-blue-600 hover:underline font-medium">
               Já tem uma conta? Faça login
             </Link>
           </div>
         </div>
 
-        {/* Rodapé */}
-        <div className="mt-12 text-xs text-gray-500 flex flex-wrap justify-center gap-4">
-          <a href="#">Contact</a>
-          <a href="#">Guide</a>
-          <a href="#">FAQ</a>
-          <a href="#">Report Vulnerability</a>
+        <div className="absolute bottom-8 w-full text-xs text-gray-500 flex flex-wrap justify-center gap-6 px-8">
+          <a href="#" className="hover:underline">Contact</a>
+          <a href="#" className="hover:underline">Guide</a>
+          <a href="#" className="hover:underline">FAQ</a>
+          <a href="#" className="hover:underline">Report Vulnerability</a>
         </div>
       </div>
 
-      <div className="hidden md:flex w-1/2 bg-gradient-to-br from-cyan-300 to-teal-200 relative">
-        <div className="absolute bottom-6 right-6 text-gray-700 text-sm font-medium">
+      <div className="hidden md:flex w-1/2 bg-blue-100 relative items-center justify-center p-8">
+        <img
+          src="/images/psychology-illustration.png"
+          alt="Ilustração com tema de psicologia"
+          className="max-w-[75%] h-auto object-contain"
+        />
+
+        <div className="absolute bottom-8 left-8 text-blue-800 text-base font-semibold">
           <div className="flex items-center gap-1">
             <span>APP Health</span>
           </div>
