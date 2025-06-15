@@ -10,7 +10,7 @@ const Header = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
-    
+
     if (token && storedUser) {
       setIsLoggedIn(true);
       setUser(JSON.parse(storedUser));
@@ -27,13 +27,13 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white shadow-md py-4 px-6 flex justify-between items-center">
+    <header className="bg-gradient-to-br from-[#7AFFF4] to-[#72FFDF] shadow-md py-4 px-6 flex justify-between items-center border-b border-gray-400">
       <Link to="/" className="text-xl font-bold text-gray-800">LOGO</Link>
-      
+
       <nav className="flex space-x-4">
         {isLoggedIn && user ? (
           <div className="relative">
-            <button 
+            <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="flex items-center space-x-2 focus:outline-none"
             >
@@ -44,7 +44,7 @@ const Header = () => {
               </div>
               <span className="text-gray-700">{user.name}</span>
             </button>
-            
+
             {isDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
                 <Link
@@ -72,14 +72,14 @@ const Header = () => {
           </div>
         ) : (
           <>
-            <Link 
-              to="/cadastro" 
+            <Link
+              to="/cadastro"
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
             >
               Cadastre-se
             </Link>
-            <Link 
-              to="/login" 
+            <Link
+              to="/login"
               className="px-4 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition"
             >
               Entrar

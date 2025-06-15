@@ -63,13 +63,16 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex bg-white">
+    <div className="h-screen w-screen overflow-hidden flex bg-white">
       <div className="w-full md:w-1/2 flex flex-col justify-center p-8 relative">
         <button
           onClick={() => navigate(-1)}
-          className="absolute top-8 left-8 text-gray-500 hover:text-gray-700 transition"
+          className="absolute top-8  left-8 bg-white border border-gray-200 rounded-lg hover:bg-cyan-100 text-gray-500 hover:text-gray-700 transition"
         >
-          <ArrowLeft size={28} />
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
         </button>
 
         <div className="flex flex-col items-start px-8 py-16 w-full max-w-sm mx-auto">
@@ -80,7 +83,7 @@ const RegisterPage = () => {
             Crie sua conta agora!
           </p>
 
-          <h2 className="text-3xl font-bold text-blue-700 mb-10">
+          <h2 className="text-3xl font-bold text-blue-700 mb-10 self-center text-center">
             Cadastre-se como paciente
           </h2>
 
@@ -90,43 +93,45 @@ const RegisterPage = () => {
             </div>
           )}
 
-          <form className="space-y-8 w-full" onSubmit={handleSubmit}>
-            <input
-              type="text"
-              name="name"
-              placeholder="Insira seu Nome"
-              className="w-full border border-gray-300 rounded-md py-3 px-3 focus:outline-none focus:border-blue-600 placeholder-gray-400 text-gray-800 text-lg bg-white"
-              required
-              value={formData.name}
-              onChange={handleChange}
-            />
-            <input
-              type="email"
-              name="email"
-              placeholder="Insira seu Email"
-              className="w-full border border-gray-300 rounded-md py-3 px-3 focus:outline-none focus:border-blue-600 placeholder-gray-400 text-gray-800 text-lg bg-white"
-              required
-              value={formData.email}
-              onChange={handleChange}
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Insira sua Senha"
-              className="w-full border border-gray-300 rounded-md py-3 px-3 focus:outline-none focus:border-blue-600 placeholder-gray-400 text-gray-800 text-lg bg-white"
-              required
-              value={formData.password}
-              onChange={handleChange}
-            />
-            <input
-              type="password"
-              name="confirmPassword"
-              placeholder="Confirme a Senha"
-              className="w-full border border-gray-300 rounded-md py-3 px-3 focus:outline-none focus:border-blue-600 placeholder-gray-400 text-gray-800 text-lg bg-white"
-              required
-              value={formData.confirmPassword}
-              onChange={handleChange}
-            />
+          <form className="space-y-10 w-full" onSubmit={handleSubmit}>
+            <div className="flex flex-col space-y-6 items-center justify-center">
+              <input
+                type="text"
+                name="name"
+                placeholder="Insira seu Nome"
+                className="min-w-96 border-b border-gray-500 py-3 px-3 focus:outline-none focus:border-blue-600 placeholder-gray-400 text-gray-800 text-lg bg-white"
+                required
+                value={formData.name}
+                onChange={handleChange}
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Insira seu Email"
+                className="min-w-96 border-b border-gray-500 py-3 px-3 focus:outline-none focus:border-blue-600 placeholder-gray-400 text-gray-800 text-lg bg-white"
+                required
+                value={formData.email}
+                onChange={handleChange}
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Insira sua Senha"
+                className="min-w-96 border-b border-gray-500 py-3 px-3 focus:outline-none focus:border-blue-600 placeholder-gray-400 text-gray-800 text-lg bg-white"
+                required
+                value={formData.password}
+                onChange={handleChange}
+              />
+              <input
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirme a Senha"
+                className="min-w-96 border-b border-gray-500 py-3 px-3 focus:outline-none focus:border-blue-600 placeholder-gray-400 text-gray-800 text-lg bg-white"
+                required
+                value={formData.confirmPassword}
+                onChange={handleChange}
+              />
+          </div>
 
             <button
               type="submit"
@@ -144,7 +149,7 @@ const RegisterPage = () => {
           </div>
         </div>
 
-        <div className="absolute bottom-8 w-full text-xs text-gray-500 flex flex-wrap justify-center gap-6 px-8">
+        <div className="w-full text-xs text-gray-500 flex flex-wrap justify-center gap-6 mt-12 text-center">
           <a href="#" className="hover:underline">Contact</a>
           <a href="#" className="hover:underline">Guide</a>
           <a href="#" className="hover:underline">FAQ</a>
@@ -152,7 +157,7 @@ const RegisterPage = () => {
         </div>
       </div>
 
-      <div className="hidden md:flex w-1/2 bg-blue-100 relative items-center justify-center p-8">
+      <div className="hidden md:flex w-1/2 bg-gradient-to-br from-[#7AFFF4] to-[#72FFDF] relative items-center justify-center p-8">
         <img
           src="/images/psychology-illustration.png"
           alt="Ilustração com tema de psicologia"

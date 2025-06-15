@@ -4,10 +4,9 @@ import Footer from '../components/footer';
 
 const HomePage = () => {
   const flashcards = [
-    { image: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTe930RYtIMySmrb9qOc0czMjAK_MD3qR8NvZNpD2JQmEu-wpHHPEFbPI9NoUOT", title: "Título de flashcard com link 1", content: "escrever alguma coisa sobre algum serviço 1" },
-    { image: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTe930RYtIMySmrb9qOc0czMjAK_MD3qR8NvZNpD2JQmEu-wpHHPEFbPI9NoUOT", title: "Título de flashcard com link 2", content: "escrever alguma coisa sobre algum serviço 2" },
-    { image: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTe930RYtIMySmrb9qOc0czMjAK_MD3qR8NvZNpD2JQmEu-wpHHPEFbPI9NoUOT", title: "Título de flashcard com link 3", content: "escrever alguma coisa sobre algum serviço 3" },
-    { image: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTe930RYtIMySmrb9qOc0czMjAK_MD3qR8NvZNpD2JQmEu-wpHHPEFbPI9NoUOT", title: "Título de flashcard com link 3", content: "escrever alguma coisa sobre algum serviço 3" },
+    { image: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTe930RYtIMySmrb9qOc0czMjAK_MD3qR8NvZNpD2JQmEu-wpHHPEFbPI9NoUOT", title: "Serviço 1", content: "Descrição detalhada do nosso primeiro serviço. Foco na qualidade e inovação." },
+    { image: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTe930RYtIMySmrb9qOc0czMjAK_MD3qR8NvZNpD2JQmEu-wpHHPEFbPI9NoUOT", title: "Serviço 2", content: "Nosso segundo serviço oferece suporte completo e resultados garantidos." },
+    { image: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTe930RYtIMySmrb9qOc0czMjAK_MD3qR8NvZNpD2JQmEu-wpHHPEFbPI9NoUOT", title: "Serviço 3", content: "Conheça nosso terceiro serviço, pensado para suas necessidades específicas." },
   ];
   const usageItems = [
     { icon: '💲', title: "MODO DE USO OU SLA", description: "Um monte de informação sobre o uso da plataforma e mais alguma coisa." },
@@ -34,46 +33,46 @@ const HomePage = () => {
       <Header />
 
       <main>
-        <section className="py-12 px-6 bg-cyan-200">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-semibold text-gray-800 mb-8 leading-tight">
+        <section className="py-20 px-6 min-h-[86vh] flex items-center bg-gradient-to-br from-[#7AFFF4] to-[#72FFDF] border-b border-gray-400">
+          <div className="max-w-5xl mx-auto text-center w-full">
+            <h1 className="text-4xl md:text-5xl font-semibold min-h-[20vh] text-gray-800 mb-12 leading-tight">
               O <strong className='font semibold'>Nome Dramático</strong> alguma coisa sla o que,<br />
               <span className="text-gray-800">não sei o que lá mais palavras.</span>
             </h1>
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
               {flashcards.map((card, index) => (
-                <div key={index} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition p-4" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition p-6 w-full max-w-sm" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   {card.image && (
                     <img
                       src={card.image}
                       alt={`Imagem do flashcard ${index + 1}`}
-                      className="w-3/4 sm:w-2/3 md:w-full h-auto mb-2 rounded object-cover"
+                      className="w-3/4 sm:w-2/3 md:w-full h-auto mb-4 rounded object-cover mx-auto"
                       style={{
-                        maxWidth: '120px',
-                        maxHeight: '120px'
+                        maxWidth: '150px',
+                        maxHeight: '150px'
                       }}
                     />
                   )}
-                  <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-1 text-left">{card.title}</h3>
-                  <p className="text-xs sm:text-sm text-gray-600 text-left">{card.content}</p>
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2 text-center">{card.title}</h3>
+                  <p className="text-sm sm:text-base text-gray-700 text-center">{card.content}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="py-12 px-6 bg-blue-100">
-          <div className="max-w-6xl mx-auto text-center">
+        <section className="py-20 px-6 bg-blue-100 border-b border-gray-400 flex items-center min-h-[95vh]">
+          <div className="max-w-6xl mx-auto text-center w-full">
             <h2 className="text-4xl font-extrabold text-gray-800 mb-4">USO DA PLATAFORMA</h2>
-            <div className="inline-block bg-blue-700 text-white text-xl font-semibold py-2 px-8 rounded-full mb-12 shadow-md">
+            <div className="inline-block bg-blue-700 text-white text-xl font-semibold py-2 px-8 rounded-full mb-16 shadow-md">
               USO PLATAF
             </div>
 
-            <div className="flex flex-col md:flex-row items-start md:space-x-8">
+            <div className="flex flex-col md:flex-row items-center md:items-start md:space-x-12">
 
               <div className="w-full md:w-1/2 mb-8 md:mb-0">
-                <div className="relative pt-[63.5%] bg-gray-200 rounded-lg shadow-md overflow-hidden">
+                <div className="relative pt-[65%] bg-gray-200 rounded-lg shadow-md overflow-hidden">
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
                     src="https://www.youtube.com/embed/dQw4w9WgXcQ"
@@ -86,15 +85,15 @@ const HomePage = () => {
               </div>
 
               <div className="w-full md:w-1/2">
-                <div className="space-y-6">
+                <div className="space-y-8">
                   {usageItems.map((item, index) => (
-                    <div key={index} className="flex items-center bg-white p-4 rounded-lg shadow-sm">
-                      <div className="flex-shrink-0 w-10 h-10 mr-4 flex items-center justify-center bg-blue-500 rounded-full text-white text-2xl font-bold">
+                    <div key={index} className="flex items-center bg-white p-6 rounded-lg shadow-md">
+                      <div className="flex-shrink-0 w-12 h-12 mr-4 flex items-center justify-center bg-blue-500 rounded-full text-white text-3xl font-bold">
                         {item.icon}
                       </div>
                       <div className="flex-1 text-left">
-                        <h3 className="text-lg font-bold text-gray-800 leading-tight mb-1">{item.title}</h3>
-                        <p className="text-gray-700 leading-snug">{item.description}</p>
+                        <h3 className="text-xl font-bold text-gray-800 leading-tight mb-1">{item.title}</h3>
+                        <p className="text-base text-gray-700 leading-snug">{item.description}</p>
                       </div>
                     </div>
                   ))}

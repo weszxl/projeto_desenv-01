@@ -55,8 +55,8 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex bg-white">
-      <div className="hidden md:flex w-1/2 bg-blue-100 relative items-center justify-center p-8">
+    <div className="h-screen w-screen overflow-hidden flex bg-white">
+      <div className="hidden md:flex w-1/2 bg-gradient-to-br from-[#7AFFF4] to-[#72FFDF] relative items-center justify-center p-8">
         <img
           src="/images/psychology-illustration.png"
           alt="Ilustração com tema de psicologia"
@@ -73,7 +73,7 @@ const LoginPage = () => {
       <div className="w-full md:w-1/2 flex flex-col justify-center p-8 relative">
         <button
           onClick={() => navigate(-1)}
-          className="absolute top-8 left-8 text-gray-500 hover:text-gray-700 transition"
+          className="absolute top-8  left-8 bg-white border border-gray-200 rounded-lg hover:bg-cyan-100 text-gray-500 hover:text-gray-700 transition"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none"
             viewBox="0 0 24 24" stroke="currentColor">
@@ -89,9 +89,10 @@ const LoginPage = () => {
             Seja bem-vindo de volta!
           </p>
 
-          <h2 className="text-3xl font-bold text-blue-700 mb-10">
+          <h2 className="text-3xl font-bold text-blue-700 mb-10 self-center text-center">
             Faça seu login
           </h2>
+
 
           {location.state?.success && (
             <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-md w-full">
@@ -106,24 +107,26 @@ const LoginPage = () => {
           )}
 
           <form className="space-y-8 w-full" onSubmit={handleSubmit}>
-            <input
-              type="email"
-              placeholder="Insira seu Email"
-              className="w-full border border-gray-300 rounded-md py-3 px-3 focus:outline-none focus:border-blue-600 placeholder-gray-400 text-gray-800 text-lg bg-white"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-              type="password"
-              placeholder="Insira sua Senha"
-              className="w-full border border-gray-300 rounded-md py-3 px-3 focus:outline-none focus:border-blue-600 placeholder-gray-400 text-gray-800 text-lg bg-white"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className="flex flex-col items-center justify-center">
+              <input
+                type="email"
+                placeholder="Insira seu Email"
+                className="min-w-96 border-b border-gray-500 py-3 px-3 focus:outline-none focus:border-blue-600 placeholder-gray-400 text-gray-800 text-lg bg-white"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <input
+                type="password"
+                placeholder="Insira sua Senha"
+                className="min-w-96 mt-8 border-b border-gray-500 py-3 px-3 focus:outline-none focus:border-blue-600 placeholder-gray-400 text-gray-800 text-lg bg-white"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
 
-            <div className="text-right text-base mt-2">
+            <div className="text-center text-base mt-2">
               <Link to="/recuperar-senha" className="text-blue-600 hover:underline font-medium">
                 Esqueceu a senha?
               </Link>
@@ -145,12 +148,13 @@ const LoginPage = () => {
           </div>
         </div>
 
-        <div className="absolute bottom-8 w-full text-xs text-gray-500 flex flex-wrap justify-center gap-6 px-8">
+        <div className="w-full text-xs text-gray-500 flex flex-wrap justify-center gap-6 mt-12 text-center">
           <a href="#" className="hover:underline">Contact</a>
           <a href="#" className="hover:underline">Guide</a>
           <a href="#" className="hover:underline">FAQ</a>
           <a href="#" className="hover:underline">Report Vulnerability</a>
         </div>
+
       </div>
     </div>
   );
