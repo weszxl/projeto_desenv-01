@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const patientProfileRoutes = require('./routes/patientProfileRoutes');
+const studentProfileRoutes = require('./routes/studentProfileRoutes');
 
 const availabilityRoutes = require('./routes/availabilityRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
@@ -27,6 +28,7 @@ app.use(cookieParser());
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/patient', patientProfileRoutes);
+app.use('/student', studentProfileRoutes);
 
 app.use('/api/availability', availabilityRoutes);
 app.use('/api/appointments', appointmentRoutes);
@@ -63,6 +65,6 @@ app.get('/auth/google/callback', async (req, res) => {
 const PORT = process.env.PORT || 3050;
 app.listen(PORT, () => {
   console.log(`o serve ta online | http://localhost:${PORT}`);
-  console.log(`vo durmi`)
+  // console.log(`vo durmi`)
 });
 
