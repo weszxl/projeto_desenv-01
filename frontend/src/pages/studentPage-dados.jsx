@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/header';
 import Footer from '../components/footer';
+import AvailableTimes from '../components/availableTimes';
 import WarningCompleteProfileStudent from '../components/warningCompleteProfileStudent';
 import { api } from '../api/axiosConfig';
 
@@ -83,12 +84,15 @@ const StudentPageDados = () => {
   const [data, setData] = useState('');
   const [horaInicial, setHoraInicial] = useState('');
 
+  const [horarios, setHorarios] = useState([]);
   const [msg, setMsg] = useState(null);
   const [msgTipo, setMsgTipo] = useState(''); 
   const [loading, setLoading] = useState(true);
 
   const [openWarningProfile, setOpenWarningProfile] = useState(false);
   const [profileCompleted, setProfileCompleted] = useState(true); 
+
+  const [studentId, setStudentId] = useState(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -116,6 +120,7 @@ const StudentPageDados = () => {
         if (data.photo_url) setPreview(data.photo_url);
         if (data.enrolment_url) setComprovantePreview(data.enrolment_url);
         setProfileCompleted(!!data.profile_completed);
+        setStudentId(data.user_id);
       } catch (error) {
         setMsg('Não foi possível carregar os dados.');
         setMsgTipo('erro');
@@ -125,6 +130,24 @@ const StudentPageDados = () => {
     };
     fetchProfile();
   }, []);
+
+  useEffect(() => {
+    // console.log('useEffect disparou, selectedTab:', selectedTab, 'studentId:', studentId); // log
+    if (selectedTab === 'disponibilidade' && studentId) {
+      fetchHorarios();
+    }
+  }, [selectedTab, studentId]);
+
+  const fetchHorarios = async () => {
+    try {
+      // console.log('studentId no fetchHorarios:', studentId); // log
+      if (!studentId) return;
+      const { data } = await api.get(`/api/availability/student/${studentId}`);
+      setHorarios(data);
+    } catch {
+      setHorarios([]);
+    }
+  };
 
   const handleTabChange = (tab) => setSelectedTab(tab);
 
@@ -210,10 +233,39 @@ const StudentPageDados = () => {
   };
 
   // adicionar horário
-  const handleDisponibilidadeSubmit = (e) => {
+  const handleDisponibilidadeSubmit = async (e) => {
     e.preventDefault();
-    // integração futura para horários
+    setMsg(null);
+    setMsgTipo('');
+    if (!data || !horaInicial) {
+      setMsg('Preencha todos os campos de disponibilidade.');
+      setMsgTipo('erro');
+      return;
+    }
+
+    const horaFinal = calcularHoraFinal(horaInicial);
+
+    try {
+      await api.post('/api/availability', {
+        date: data,
+        start_time: horaInicial,
+        end_time: horaFinal
+      });
+      setMsg('Horário adicionado com sucesso!');
+      setMsgTipo('sucesso');
+      setData('');
+      setHoraInicial('');
+      fetchHorarios();
+    } catch (err) {
+      let msgErro = 'Erro ao adicionar horário.';
+      if (err.response && err.response.data && err.response.data.error) {
+        msgErro = err.response.data.error;
+      }
+      setMsg(msgErro);
+      setMsgTipo('erro');
+    }
   };
+
   const handleDisponibilidadeCancelar = () => {
     setData('');
     setHoraInicial('');
@@ -242,6 +294,18 @@ const StudentPageDados = () => {
       </div>
     );
   }
+
+  // deletar horário
+  const handleDeleteHorario = async (id) => {
+  try {
+    await api.delete(`/api/availability/${id}`);
+    fetchHorarios();
+  } catch (err) {
+    setMsg('Erro ao deletar horário.');
+    setMsgTipo('erro');
+  }
+};
+
 
   return (
     <div className="min-h-screen flex flex-col bg-blue-50">
@@ -455,6 +519,7 @@ const StudentPageDados = () => {
               </form>
             )}
 
+
             {/* DISPONIBILIDADE */}
             {selectedTab === 'disponibilidade' && (
               <div>
@@ -518,7 +583,7 @@ const StudentPageDados = () => {
                   </div>
                 </form>
 
-                {/* Modal de aviso de perfil incompleto */}
+                {/* MODAL DE AVISO */}
                 <WarningCompleteProfileStudent
                   open={openWarningProfile}
                   onClose={() => setOpenWarningProfile(false)}
@@ -526,18 +591,16 @@ const StudentPageDados = () => {
                     setOpenWarningProfile(false);
                     setSelectedTab('pessoais');
                   }}
+                />
 
-                />              
-                {/* SEUS HORÁRIOS - INTEGRAÇÃO*/}
-
-                <div className="mt-10">
-                  <h2 className="font-semibold text-lg text-gray-800 mb-2">Seus Horários</h2>
-                  <div className="rounded-md border bg-gray-50 px-6 py-4 shadow-sm text-gray-400">
-                    Seus horários cadastrados aparecerão aqui.
-                  </div>
-                </div>
+                {/* LISTA DE HORÁRIOS */}
+                <AvailableTimes horarios={horarios} onDelete={handleDeleteHorario} />
+                
               </div>
             )}
+
+
+
           </div>
         </div>
       </main>

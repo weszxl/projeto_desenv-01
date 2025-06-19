@@ -15,6 +15,17 @@ class AvailabilityController {
     }
 
     try {
+      // linka course_name a speciality
+      const studentProfile = await db('student_profiles')
+        .where({ user_id: student_id })
+        .first();
+
+      if (!studentProfile || !studentProfile.course_name) {
+        return res.status(400).json({ error: 'Curso não encontrado no perfil acadêmico.' });
+      }
+
+      const specialty = studentProfile.course_name;
+
       const { total } = await Availability.countByDate(student_id, date);
       if (Number(total) >= 2) {
         return res.status(400).json({ error: 'limitado a 2 horários por dia' });
@@ -25,7 +36,14 @@ class AvailabilityController {
         return res.status(400).json({ error: 'horário já existente' });
       }
 
-      const availability = await Availability.create({ student_id, date, start_time, end_time });
+      const availability = await Availability.create({
+        student_id,
+        date,
+        start_time,
+        end_time,
+        specialty
+      });
+
       return res.status(201).json(availability);
 
     } catch (err) {
@@ -69,9 +87,36 @@ class AvailabilityController {
       res.status(500).json({ error: 'erro na busca' });
     }
   }
+
+  static async delete(req, res) {
+    const { id } = req.params;
+
+    try {
+      const horario = await db('availability')
+        .where({ id })
+        .first();
+
+      if (!horario) {
+        return res.status(404).json({ error: 'Horário não encontrado.' });
+      }
+
+      if (req.user.role !== 'admin' && horario.student_id !== req.user.id) {
+        return res.status(403).json({ error: 'Sem permissão para deletar este horário.' });
+      }
+
+      await db('availability').where({ id }).del();
+
+      return res.json({ success: true });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Erro ao deletar horário.' });
+    }
+  }
+
+
+  
 }
 
+
+
 module.exports = AvailabilityController;
-
-
-
