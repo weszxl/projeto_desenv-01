@@ -68,19 +68,19 @@ class AvailabilityController {
     const { date } = req.params;
 
     try {
-      const results = await db('availabilities')
-        .join('users', 'availabilities.student_id', '=', 'users.id')
-        .where('availabilities.date', date)
+      const results = await db('availability')
+        .join('users', 'availability.student_id', '=', 'users.id')
+        .where('availability.date', date)
         .andWhere('users.role', 'student')
         .select(
-          'availabilities.id',
-          'availabilities.date',
-          'availabilities.start_time',
-          'availabilities.end_time',
+          'availability.id',
+          'availability.date',
+          'availability.start_time',
+          'availability.end_time',
+          'availability.specialty',
           'users.id as student_id',
           'users.name as student_name'
         );
-
       res.json(results);
     } catch (err) {
       console.error(err);
