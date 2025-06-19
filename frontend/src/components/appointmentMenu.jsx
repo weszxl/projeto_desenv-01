@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
+import { api } from '../api/axiosConfig';
 
 const tiposConsulta = [
   { label: 'Selecione o tipo', value: '' },
@@ -14,9 +15,10 @@ const AppointmentMenu = ({ open, onClose }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [calendarOpen, setCalendarOpen] = useState(true);
 
+  const [disponiveis, setDisponiveis] = useState([]);
+  const [loadingDisponiveis, setLoadingDisponiveis] = useState(false);
+
   const isLastMonthOfYear = today.getMonth() === 11;
-  const lastAllowedYear = today.getFullYear();
-  const lastAllowedMonth = isLastMonthOfYear ? 0 : today.getMonth() + 1;
   const lastAllowedDate = isLastMonthOfYear
     ? new Date(today.getFullYear() + 1, 0, 31)
     : new Date(today.getFullYear(), today.getMonth() + 2, 0);
@@ -25,6 +27,33 @@ const AppointmentMenu = ({ open, onClose }) => {
   const toMonth = isLastMonthOfYear
     ? new Date(today.getFullYear() + 1, 0)
     : new Date(today.getFullYear(), today.getMonth() + 1);
+
+  useEffect(() => {
+    const buscarDisponiveis = async (date, tipo) => {
+      if (!date) {
+        setDisponiveis([]);
+        return;
+      }
+      setLoadingDisponiveis(true);
+      try {
+        const dataISO = date.toISOString().split('T')[0];
+        const res = await api.get(`/api/availability/date/${dataISO}`);
+        const filtrados = tipo
+          ? res.data.filter(d => d.specialty && d.specialty.toLowerCase() === tipo)
+          : res.data;
+        setDisponiveis(filtrados);
+      } catch (err) {
+        setDisponiveis([]);
+      } finally {
+        setLoadingDisponiveis(false);
+      }
+    };
+    if (selectedDate) {
+      buscarDisponiveis(selectedDate, tipo);
+    } else {
+      setDisponiveis([]);
+    }
+  }, [selectedDate, tipo]);
 
   if (!open) return null;
 
@@ -98,9 +127,61 @@ const AppointmentMenu = ({ open, onClose }) => {
         </div>
         <div className="mb-6">
           <span className="block font-medium text-gray-800 mb-2">Estudantes Disponíveis</span>
-          <div className="text-center text-gray-400 border border-gray-200 rounded p-4">
-            Nenhum estudante disponível para os filtros selecionados.
-          </div>
+          {loadingDisponiveis ? (
+            <div className="text-center text-gray-400 border border-gray-200 rounded p-4">Carregando...</div>
+          ) : disponiveis.length === 0 ? (
+            <div className="text-center text-gray-400 border border-gray-200 rounded p-4">
+              Nenhum estudante disponível para os filtros selecionados.
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {disponiveis.map(slot => (
+                <div
+                  key={slot.id}
+                  className="border-2 border-blue-400 rounded-xl bg-gray-50 px-4 py-4 flex flex-col gap-2"
+                >
+                  <div className="flex items-start gap-4">
+                    {/* FOTO */}
+                    <div>
+                      {slot.photo_url ? (
+                        <img
+                          src={slot.photo_url}
+                          alt={slot.student_name}
+                          className="w-16 h-16 rounded-full object-cover border-2 border-gray-300"
+                        />
+                      ) : (
+                        <div className="w-16 h-16 rounded-full bg-red-500 flex items-center justify-center text-white text-xl font-bold">
+                          {slot.student_name?.[0] || '?'}
+                        </div>
+                      )}
+                    </div>
+                    <div>
+                      <div className="font-semibold text-gray-800 text-base">{slot.student_name}</div>
+                      <div className="text-sm text-gray-700">{slot.course_name || slot.specialty}</div>
+                      
+                      
+                      <div className="text-xs text-gray-600 mt-2">
+                        {slot.about_me && slot.about_me.trim() !== '' ? slot.about_me : 'Sem informação'}
+                      </div>
+                    
+                    
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center mt-4">
+                    <span className="font-medium text-gray-700 text-sm">
+                      HORÁRIO DISPONÍVEL: <span className="font-bold">{slot.start_time.slice(0,5)}</span>
+                    </span>
+                    <button
+                      className="bg-purple-700 text-white px-6 py-2 rounded-md font-semibold hover:bg-purple-800 transition"
+                      // onClick=// agendamento
+                    >
+                      Agendar
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className="flex justify-center mt-2">
           <button
