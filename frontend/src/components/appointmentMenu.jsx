@@ -28,6 +28,21 @@ const AppointmentMenu = ({ open, onClose }) => {
     ? new Date(today.getFullYear() + 1, 0)
     : new Date(today.getFullYear(), today.getMonth() + 1);
 
+  const [agendandoId, setAgendandoId] = useState(null);
+
+  const handleAgendar = async (slot) => {
+    setAgendandoId(slot.id);
+    try {
+      await api.post('/api/appointments', { slot_id: slot.id });
+      alert('Agendamento realizado com sucesso!');
+      onClose();
+    } catch (error) {
+      alert(error?.response?.data?.error || "Erro ao agendar.");
+    } finally {
+      setAgendandoId(null);
+    }
+  };
+
   useEffect(() => {
     const buscarDisponiveis = async (date, tipo) => {
       if (!date) {
@@ -56,6 +71,8 @@ const AppointmentMenu = ({ open, onClose }) => {
   }, [selectedDate, tipo]);
 
   if (!open) return null;
+
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center z-50">
@@ -171,12 +188,16 @@ const AppointmentMenu = ({ open, onClose }) => {
                     <span className="font-medium text-gray-700 text-sm">
                       HORÁRIO DISPONÍVEL: <span className="font-bold">{slot.start_time.slice(0,5)}</span>
                     </span>
+
+
                     <button
                       className="bg-purple-700 text-white px-6 py-2 rounded-md font-semibold hover:bg-purple-800 transition"
-                      // onClick=// agendamento
+                      onClick={() => handleAgendar(slot)}
+                      disabled={agendandoId === slot.id}
                     >
-                      Agendar
+                      {agendandoId === slot.id ? "Agendando..." : "Agendar"}
                     </button>
+
                   </div>
                 </div>
               ))}

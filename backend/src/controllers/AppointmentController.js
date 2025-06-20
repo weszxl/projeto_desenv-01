@@ -3,23 +3,27 @@ const Appointment = require('../models/Appointment');
 const calendar = require('../config/googleAuth');
 const sendEmail = require('../services/emailService');
 
-
 class AppointmentController {
   static async create(req, res) {
-    const { student_id, date, start_time, end_time } = req.body;
+    const { slot_id } = req.body;
     const patient_id = req.user.id;
 
     try {
-      if (!student_id || !date || !start_time || !end_time) {
-        return res.status(400).json({ error: 'preencha todos os campos' });
+      if (!slot_id) {
+        return res.status(400).json({ error: 'Selecione um horário.' });
       }
+
+      const slot = await db('availability').where({ id: slot_id }).first();
+      if (!slot) return res.status(404).json({ error: 'Horário não encontrado.' });
+
+      const { student_id, date, start_time, end_time } = slot;
 
       const conflito = await Appointment.isTimeTaken(student_id, date, start_time, end_time);
       if (conflito) {
         return res.status(400).json({ error: 'horário já agendado com este estudante' });
       }
 
-      // criando evento no Google Calendar
+      // cria evento api do gugli
       const event = {
         summary: 'Atendimento Psicológico',
         description: 'Sessão entre paciente e estudante',
@@ -48,14 +52,14 @@ class AppointmentController {
 
       const meetLink = response.data.hangoutLink;
 
-      // salvando no banco
       const novo = await Appointment.create({
         patient_id,
         student_id,
+        slot_id,
         date,
         start_time,
         end_time,
-        status: 'agendada',
+        status: 'scheduled',
         meet_link: meetLink
       });
 
@@ -80,7 +84,7 @@ class AppointmentController {
         subject: 'Nova consulta agendada',
         html: `
           <h3>Olá, ${estudante.name}!</h3>
-          <p>Um paciente agendou uma horário com você.</p>
+          <p>Um paciente agendou um horário com você.</p>
           <p><strong>Paciente:</strong> ${paciente.name}<br />
           <strong>Data:</strong> ${date}<br />
           <strong>Horário:</strong> ${start_time} às ${end_time}</p>
@@ -88,7 +92,6 @@ class AppointmentController {
           <a href="${meetLink}" target="_blank">${meetLink}</a></p>
         `
       });
-
 
       res.status(201).json(novo);
     } catch (error) {
