@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { api } from '../api/axiosConfig';
+
 import Header from '../components/header';
 import Footer from '../components/footer';
 import AppointmentMenu from '../components/appointmentMenu';
-import WarningCompleteProfile from '../components/warningCompleteProfile'; 
-import { api } from '../api/axiosConfig';
-import { useNavigate } from 'react-router-dom';
+import WarningCompleteProfile from '../components/warningCompleteProfile';
+import PatientActiveQueries from "../components/patientActiveQueries";
 
 const PatientPage = () => {
   const [selectedTab, setSelectedTab] = useState('agendadas');
   const [showAppointmentMenu, setShowAppointmentMenu] = useState(false);
   const [profile, setProfile] = useState(null);
   const [profileLoading, setProfileLoading] = useState(true);
-  const [showWarning, setShowWarning] = useState(false); 
+  const [showWarning, setShowWarning] = useState(false);
+  const [appointments, setAppointments] = useState([]);
+  const [appointmentsLoading, setAppointmentsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,6 +30,21 @@ const PatientPage = () => {
       }
     };
     fetchProfile();
+  }, []);
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      setAppointmentsLoading(true);
+      try {
+        const { data } = await api.get('/api/appointments');
+        setAppointments(data);
+      } catch (err) {
+        setAppointments([]);
+      } finally {
+        setAppointmentsLoading(false);
+      }
+    };
+    fetchAppointments();
   }, []);
 
   const isProfileComplete = profile &&
@@ -49,54 +68,95 @@ const PatientPage = () => {
     navigate('/patientPage-dados');
   };
 
+  // ajustar implementação
+  const handleCancel = (appointment) => {
+    alert('Funcionalidade de cancelar consulta em breve.');
+  };
+
+  // ajustar implementação
+  const handleViewStudent = (appointment) => {
+    alert(`Perfil do estudante: ${appointment.student_name}\nFuncionalidade em breve.`);
+  };
+
+  // ajustar implementação
+  const handleReschedule = (appointment) => {
+    alert('Funcionalidade de remarcar em breve.');
+  };
+
+  const handleJoinMeet = (appointment) => {
+    if (appointment.meet_link) {
+      window.open(appointment.meet_link, "_blank");
+    }
+  };
+
   const renderContent = () => {
+    if (appointmentsLoading) {
+      return <div className="text-center py-10 text-gray-600">Carregando...</div>;
+    }
+
     switch (selectedTab) {
-      case 'agendadas':
+      case 'agendadas': {
+        const agendadas = appointments.filter(a => a.status === 'scheduled');
         return (
-          <div className="text-center flex flex-col items-center justify-center py-12">
-            <img
-              src="/images/no-schedule.png"
-              alt="Sem consultas agendadas"
-              className="mx-auto mb-6"
-              style={{ maxWidth: 220 }}
-            />
-            <p className="text-lg font-semibold text-gray-700 mb-1">
-              Você não tem consultas agendadas
-            </p>
-            <p className="text-gray-500 mb-5">
-              Estamos aqui para te ajudar, agende uma consulta para manter em dia os cuidados com a saúde e o bem-estar.
-            </p>
-            <button
-              className="bg-purple-700 hover:bg-purple-800 transition text-white font-semibold py-2 px-7 rounded"
-              onClick={handleAgendarConsulta}
-              disabled={profileLoading}
-            >
-              Agendar consulta
-            </button>
+          <PatientActiveQueries
+            appointments={agendadas}
+            onCancel={handleCancel}
+            onViewStudent={handleViewStudent}
+            onReschedule={handleReschedule}
+            onJoin={handleJoinMeet}
+          />
+        );
+      }
+      case 'realizadas': {
+        const realizadas = appointments.filter(a => a.status === 'completed');
+        return (
+          <div>
+            {realizadas.length === 0 ? (
+              <div className="text-center flex flex-col items-center justify-center py-12">
+                <p className="text-lg font-semibold text-gray-700 mb-1">
+                  Você não tem consultas realizadas
+                </p>
+                <p className="text-gray-500">
+                  Consulte seu histórico de consultas para acompanhar os atendimentos realizados.
+                </p>
+              </div>
+            ) : (
+              <PatientActiveQueries
+                appointments={realizadas}
+                onCancel={handleCancel}
+                onViewStudent={handleViewStudent}
+                onReschedule={handleReschedule}
+                onJoin={handleJoinMeet}
+              />
+            )}
           </div>
         );
-      case 'realizadas':
+      }
+      case 'canceladas': {
+        const canceladas = appointments.filter(a => a.status === 'cancelled');
         return (
-          <div className="text-center flex flex-col items-center justify-center py-12">
-            <p className="text-lg font-semibold text-gray-700 mb-1">
-              Você não tem consultas realizadas
-            </p>
-            <p className="text-gray-500">
-              Consulte seu histórico de consultas para acompanhar os atendimentos realizados.
-            </p>
+          <div>
+            {canceladas.length === 0 ? (
+              <div className="text-center flex flex-col items-center justify-center py-12">
+                <p className="text-lg font-semibold text-gray-700 mb-1">
+                  Você não tem consultas canceladas
+                </p>
+                <p className="text-gray-500">
+                  Caso tenha dúvidas sobre consultas canceladas, entre em contato com o suporte.
+                </p>
+              </div>
+            ) : (
+              <PatientActiveQueries
+                appointments={canceladas}
+                onCancel={handleCancel}
+                onViewStudent={handleViewStudent}
+                onReschedule={handleReschedule}
+                onJoin={handleJoinMeet}
+              />
+            )}
           </div>
         );
-      case 'canceladas':
-        return (
-          <div className="text-center flex flex-col items-center justify-center py-12">
-            <p className="text-lg font-semibold text-gray-700 mb-1">
-              Você não tem consultas canceladas
-            </p>
-            <p className="text-gray-500">
-              Caso tenha dúvidas sobre consultas canceladas, entre em contato com o suporte.
-            </p>
-          </div>
-        );
+      }
       default:
         return null;
     }

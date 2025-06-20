@@ -8,8 +8,11 @@ exports.up = function(knex) {
       .references('id').inTable('users')
       .onDelete('CASCADE');
     table.integer('slot_id').notNullable()
-      .references('id').inTable('availability_slots')
+      .references('id').inTable('availability')
       .onDelete('CASCADE');
+    table.date('date').notNullable(); 
+    table.time('start_time').notNullable();
+    table.time('end_time').notNullable();
     table.enum('status', ['scheduled', 'completed', 'cancelled'])
       .defaultTo('scheduled');
     table.text('cancellation_reason');
