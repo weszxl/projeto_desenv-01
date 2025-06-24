@@ -17,6 +17,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.appointment-modal-content {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
 a {
   font-weight: 500;
   color: #646cff;

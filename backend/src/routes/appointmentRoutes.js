@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post('/', authenticate, AppointmentController.create);
 router.get('/', authenticate, AppointmentController.list);
+router.patch('/:id/cancel', authenticate, AppointmentController.cancel);
 
 module.exports = router;
 

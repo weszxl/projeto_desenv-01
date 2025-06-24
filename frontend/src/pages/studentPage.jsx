@@ -1,52 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import Header from '../components/header';
-import Footer from '../components/footer';
-// import { api } from '../api/axiosConfig'; 
-
+import Header from '../components/common/header';
+import Footer from '../components/common/footer';
+import OngoingQueries from '../components/students/ongoingQueries';
+import DoneQueries from '../components/students/doneQueries';
+import CancelledQueries from '../components/students/cancelledQueries';
+import { api } from '../api/axiosConfig';
 
 const StudentPage = () => {
-  const [selectedTab, setSelectedTab] = useState('agendadas'); // seleção de abas
+  const [selectedTab, setSelectedTab] = useState('agendadas');
+  const [consultas, setConsultas] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const buscarConsultas = async () => {
+      setLoading(true);
+      try {
+        const res = await api.get('/api/appointments');
+        setConsultas(res.data);
+      } catch (err) {
+        setConsultas([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    buscarConsultas();
+  }, []);
+
+  const agendadas = consultas.filter(c => c.status === 'scheduled');
+  const realizadas = consultas.filter(c => c.status === 'completed');
+  const canceladas = consultas.filter(c => c.status === 'cancelled');
 
   const renderContent = () => {
+    if (loading) {
+      return <div className="text-center text-gray-500">Carregando...</div>;
+    }
     switch (selectedTab) {
       case 'agendadas':
-        return (
-          <div className="text-center">
-            <img
-              src="/images/no-schedule.png"
-              alt="Sem consultas agendadas"
-              className="mx-auto mb-6"
-            />
-            <p className="text-lg font-semibold text-gray-700">
-              Você não tem consultas agendadas
-            </p>
-            <p className="text-gray-500">
-              Estamos aqui para te ajudar, agende uma consulta para manter em dia os cuidados com a saúde e o bem-estar.
-            </p>
-          </div>
-        );
+        return <OngoingQueries consultas={agendadas} />;
       case 'realizadas':
-        return (
-          <div className="text-center">
-            <p className="text-lg font-semibold text-gray-700">
-              Você não tem consultas realizadas
-            </p>
-            <p className="text-gray-500">
-              Consulte seu histórico de consultas para acompanhar os atendimentos realizados.
-            </p>
-          </div>
-        );
+        return <DoneQueries consultas={realizadas} />;
       case 'canceladas':
-        return (
-          <div className="text-center">
-            <p className="text-lg font-semibold text-gray-700">
-              Você não tem consultas canceladas
-            </p>
-            <p className="text-gray-500">
-              Caso tenha dúvidas sobre consultas canceladas, entre em contato com o suporte.
-            </p>
-          </div>
-        );
+        return <CancelledQueries consultas={canceladas} />;
       default:
         return null;
     }

@@ -63,6 +63,8 @@ class AppointmentController {
         meet_link: meetLink
       });
 
+      
+
       const paciente = await db('users').where({ id: patient_id }).first();
       const estudante = await db('users').where({ id: student_id }).first();
 
@@ -93,6 +95,8 @@ class AppointmentController {
         `
       });
 
+      await db('availability').where({ id: slot_id }).update({ status: 'booked' });
+
       res.status(201).json(novo);
     } catch (error) {
       console.error(error);
@@ -101,17 +105,55 @@ class AppointmentController {
   }
 
   static async list(req, res) {
+  const userId = req.user.id;
+  const role = req.user.role;
+
+  try {
+    await Appointment.updatePastAppointmentsToCompleted();
+    const data = await Appointment.getByUserId(userId, role);
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'erro em agendamentos' });
+  }
+}
+
+static async cancel(req, res) {
+  // console.log('cancel controller'); // log
+    const appointmentId = req.params.id;
     const userId = req.user.id;
-    const role = req.user.role;
+    const { reason } = req.body;
+
+  // console.log('REQ.USER.ID:', userId); // log
+  // console.log('Appointment ID:', appointmentId); // log
+
 
     try {
-      const data = await Appointment.getByUserId(userId, role);
-      res.json(data);
+      // paciente ou estudante pode cancelar
+      const appointment = await db('appointments').where({ id: appointmentId }).first();
+      // console.log('appointment:', appointment); // log
+      if (!appointment) {
+        return res.status(404).json({ error: 'Agendamento não encontrado.' });
+      }
+      if (
+        appointment.status !== 'scheduled' ||
+        (appointment.patient_id !== userId && appointment.student_id !== userId)
+      ) {
+        // console.log('Não autorizado:', userId, appointment.patient_id, appointment.student_id); // log
+        return res.status(403).json({ error: 'Não autorizado para cancelar este agendamento.' });
+      }
+
+      await Appointment.cancel({ appointmentId, userId, reason });
+
+      res.status(200).json({ success: true });
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'erro em agendamentos' });
+      // console.error('Erro no cancel:', err); // log
+      res.status(500).json({ error: 'Erro ao cancelar agendamento.' });
     }
   }
+
+  
+  
 }
 
 module.exports = AppointmentController;

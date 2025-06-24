@@ -6,6 +6,23 @@ const Appointment = {
     return { id, ...data };
   },
 
+  async updatePastAppointmentsToCompleted() {
+    const now = new Date();
+    const dateStr = now.toISOString().split('T')[0]; 
+    const timeStr = now.toTimeString().slice(0, 8);
+
+    await db('appointments')
+      .where('status', 'scheduled')
+      .andWhere(function () {
+        this.where('date', '<', dateStr)
+          .orWhere(function () {
+            this.where('date', '=', dateStr)
+              .andWhere('end_time', '<', timeStr);
+          });
+      })
+      .update({ status: 'completed' });
+  },
+
   async getByUserId(userId, role) {
     if (role === 'student') {
       return db('appointments as a')
@@ -46,6 +63,17 @@ const Appointment = {
     }
   },
 
+  async cancel({ appointmentId, userId, reason }) {
+    return db('appointments')
+      .where({ id: appointmentId })
+      .update({
+        status: 'cancelled',
+        cancellation_requested_by: userId,
+        cancellation_reason: reason || null,
+        updated_at: new Date().toISOString()
+      });
+  },
+
   async isTimeTaken(student_id, date, start_time, end_time) {
     return db('appointments')
       .where({ student_id, date })
@@ -54,7 +82,11 @@ const Appointment = {
          .orWhereBetween('end_time', [start_time, end_time]);
       })
       .first();
-  }
+  },
+
+
+
+  
 
 
 

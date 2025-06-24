@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import Header from '../components/header';
-import Footer from '../components/footer';
-import NewStudent from '../components/newStudent';
+import Header from '../components/common/header';
+import Footer from '../components/common/footer';
+import NewStudent from '../components/admin/newStudent';
 import { api } from '../api/axiosConfig';
 
 const AdminPage = () => {
@@ -169,7 +169,6 @@ const AdminPage = () => {
                         <td className="p-3 capitalize">{user.status || "ativo"}</td>
                         <td className="p-3">{user.ultimoAcesso ? new Date(user.ultimoAcesso).toLocaleString() : "-"}</td>
                         <td className="p-3">
-                          {/* Coloque aqui ações para editar/excluir se desejar */}
                         </td>
                       </tr>
                     ))
