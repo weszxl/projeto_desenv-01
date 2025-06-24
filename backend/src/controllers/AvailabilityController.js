@@ -72,6 +72,7 @@ class AvailabilityController {
         .join('users', 'availability.student_id', '=', 'users.id')
         .where('availability.date', date)
         .andWhere('users.role', 'student')
+        .andWhere('availability.status', 'available')
         .select(
           'availability.id',
           'availability.date',

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { api } from '../api/axiosConfig';
+import { api } from '../../api/axiosConfig';
+
 
 const NewStudent = ({ open, onClose, onSave }) => {
   const [form, setForm] = useState({

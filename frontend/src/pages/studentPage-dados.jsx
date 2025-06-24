@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Header from '../components/header';
-import Footer from '../components/footer';
-import AvailableTimes from '../components/availableTimes';
-import WarningCompleteProfileStudent from '../components/warningCompleteProfileStudent';
+import Header from '../components/common/header';
+import Footer from '../components/common/footer';
+import AvailableTimes from '../components/students/availableTimes';
+import WarningCompleteProfileStudent from '../components/students/warningCompleteProfileStudent';
 import { api } from '../api/axiosConfig';
 
 // formatação
@@ -132,7 +132,7 @@ const StudentPageDados = () => {
   }, []);
 
   useEffect(() => {
-    // console.log('useEffect disparou, selectedTab:', selectedTab, 'studentId:', studentId); // log
+    // console.log('useEffect = selectedTab:', selectedTab, 'studentId:', studentId); // log
     if (selectedTab === 'disponibilidade' && studentId) {
       fetchHorarios();
     }
@@ -140,7 +140,7 @@ const StudentPageDados = () => {
 
   const fetchHorarios = async () => {
     try {
-      // console.log('studentId no fetchHorarios:', studentId); // log
+      // console.log('fetchHorarios:', studentId); // log
       if (!studentId) return;
       const { data } = await api.get(`/api/availability/student/${studentId}`);
       setHorarios(data);

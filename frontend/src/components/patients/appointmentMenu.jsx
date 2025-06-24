@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-import { api } from '../api/axiosConfig';
+import { api } from '../../api/axiosConfig';
 
 const tiposConsulta = [
   { label: 'Selecione o tipo', value: '' },
@@ -43,6 +43,7 @@ const AppointmentMenu = ({ open, onClose }) => {
     }
   };
 
+  // Buscar estudantes só quando calendarOpen = false, selectedDate e tipo estão definidos
   useEffect(() => {
     const buscarDisponiveis = async (date, tipo) => {
       if (!date) {
@@ -63,20 +64,19 @@ const AppointmentMenu = ({ open, onClose }) => {
         setLoadingDisponiveis(false);
       }
     };
-    if (selectedDate) {
+    // Só busca se o calendário está fechado e data/tipo estão definidos
+    if (!calendarOpen && selectedDate && tipo) {
       buscarDisponiveis(selectedDate, tipo);
     } else {
       setDisponiveis([]);
     }
-  }, [selectedDate, tipo]);
+  }, [selectedDate, tipo, calendarOpen]);
 
   if (!open) return null;
 
-
-
   return (
     <div className="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl shadow-lg max-w-md w-full p-6 relative">
+      <div className="bg-white rounded-xl shadow-lg max-w-md w-full p-6 relative appointment-modal-content">
         <h2 className="text-xl font-semibold text-gray-800 mb-6">Data de preferência</h2>
         <div className="mb-4">
           <label className="block text-gray-800 mb-1 font-medium">Tipo de Consulta</label>
@@ -100,7 +100,10 @@ const AppointmentMenu = ({ open, onClose }) => {
               <DayPicker
                 mode="single"
                 selected={selectedDate}
-                onSelect={setSelectedDate}
+                onSelect={date => {
+                  setSelectedDate(date);
+                  if (date) setCalendarOpen(false); // Fecha calendário ao escolher
+                }}
                 fromDate={today}
                 toDate={lastAllowedDate}
                 defaultMonth={today}
@@ -116,17 +119,6 @@ const AppointmentMenu = ({ open, onClose }) => {
                   head_cell: { color: '#8b5cf6', fontWeight: 'bold' }
                 }}
               />
-              <div className="flex justify-end w-full mt-2">
-                <button
-                  className={`text-purple-700 font-semibold px-3 py-1 rounded hover:bg-purple-100 transition ${
-                    selectedDate ? '' : 'opacity-50 cursor-not-allowed'
-                  }`}
-                  disabled={!selectedDate}
-                  onClick={() => setCalendarOpen(false)}
-                >
-                  OK
-                </button>
-              </div>
             </div>
           ) : selectedDate ? (
             <div className="flex items-center justify-between bg-purple-50 rounded px-4 py-2 mt-1">
@@ -135,7 +127,10 @@ const AppointmentMenu = ({ open, onClose }) => {
               </span>
               <button
                 className="text-xs text-purple-700 underline hover:text-purple-900 ml-2"
-                onClick={() => setCalendarOpen(true)}
+                onClick={() => {
+                  setCalendarOpen(true);
+                  setDisponiveis([]); // Esconde estudantes ao reabrir calendário
+                }}
               >
                 Alterar
               </button>
@@ -146,13 +141,13 @@ const AppointmentMenu = ({ open, onClose }) => {
           <span className="block font-medium text-gray-800 mb-2">Estudantes Disponíveis</span>
           {loadingDisponiveis ? (
             <div className="text-center text-gray-400 border border-gray-200 rounded p-4">Carregando...</div>
-          ) : disponiveis.length === 0 ? (
+          ) : !calendarOpen && disponiveis.length === 0 ? (
             <div className="text-center text-gray-400 border border-gray-200 rounded p-4">
               Nenhum estudante disponível para os filtros selecionados.
             </div>
           ) : (
-            <div className="space-y-4">
-              {disponiveis.map(slot => (
+            <div className="space-y-4" style={{ maxHeight: "28vh", overflowY: "auto" }}>
+              {!calendarOpen && disponiveis.map(slot => (
                 <div
                   key={slot.id}
                   className="border-2 border-blue-400 rounded-xl bg-gray-50 px-4 py-4 flex flex-col gap-2"
@@ -175,21 +170,15 @@ const AppointmentMenu = ({ open, onClose }) => {
                     <div>
                       <div className="font-semibold text-gray-800 text-base">{slot.student_name}</div>
                       <div className="text-sm text-gray-700">{slot.course_name || slot.specialty}</div>
-                      
-                      
                       <div className="text-xs text-gray-600 mt-2">
                         {slot.about_me && slot.about_me.trim() !== '' ? slot.about_me : 'Sem informação'}
                       </div>
-                    
-                    
                     </div>
                   </div>
                   <div className="flex justify-between items-center mt-4">
                     <span className="font-medium text-gray-700 text-sm">
                       HORÁRIO DISPONÍVEL: <span className="font-bold">{slot.start_time.slice(0,5)}</span>
                     </span>
-
-
                     <button
                       className="bg-purple-700 text-white px-6 py-2 rounded-md font-semibold hover:bg-purple-800 transition"
                       onClick={() => handleAgendar(slot)}
@@ -197,7 +186,6 @@ const AppointmentMenu = ({ open, onClose }) => {
                     >
                       {agendandoId === slot.id ? "Agendando..." : "Agendar"}
                     </button>
-
                   </div>
                 </div>
               ))}
