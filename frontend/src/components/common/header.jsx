@@ -29,7 +29,11 @@ const Header = () => {
   return (
     <header className="bg-gradient-to-br from-[#7AFFF4] to-[#72FFDF] shadow-md py-4 px-6 flex justify-between items-center border-b border-gray-400">
       <Link to="/">
+
         <img src="../public/icons/logoteste.png" alt="Logo" className="h-10" />
+
+
+
       </Link>
 
       <nav className="flex space-x-4">
@@ -115,4 +119,3 @@ const Header = () => {
 };
 
 export default Header;
-
