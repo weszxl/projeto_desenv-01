@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/common/header';
 import Footer from '../components/common/footer';
-import AvailableTimes from '../components/students/availableTimes';
-import WarningCompleteProfileStudent from '../components/students/warningCompleteProfileStudent';
 import { api } from '../api/axiosConfig';
 
 // formatação
@@ -80,17 +78,9 @@ const StudentPageDados = () => {
     observacoes: ''
   });
 
-  // form disponibilidade
-  const [data, setData] = useState('');
-  const [horaInicial, setHoraInicial] = useState('');
-
-  const [horarios, setHorarios] = useState([]);
   const [msg, setMsg] = useState(null);
   const [msgTipo, setMsgTipo] = useState(''); 
   const [loading, setLoading] = useState(true);
-
-  const [openWarningProfile, setOpenWarningProfile] = useState(false);
-  const [profileCompleted, setProfileCompleted] = useState(true); 
 
   const [studentId, setStudentId] = useState(null);
 
@@ -119,7 +109,6 @@ const StudentPageDados = () => {
         });
         if (data.photo_url) setPreview(data.photo_url);
         if (data.enrolment_url) setComprovantePreview(data.enrolment_url);
-        setProfileCompleted(!!data.profile_completed);
         setStudentId(data.user_id);
       } catch (error) {
         setMsg('Não foi possível carregar os dados.');
@@ -130,24 +119,6 @@ const StudentPageDados = () => {
     };
     fetchProfile();
   }, []);
-
-  useEffect(() => {
-    // console.log('useEffect = selectedTab:', selectedTab, 'studentId:', studentId); // log
-    if (selectedTab === 'disponibilidade' && studentId) {
-      fetchHorarios();
-    }
-  }, [selectedTab, studentId]);
-
-  const fetchHorarios = async () => {
-    try {
-      // console.log('fetchHorarios:', studentId); // log
-      if (!studentId) return;
-      const { data } = await api.get(`/api/availability/student/${studentId}`);
-      setHorarios(data);
-    } catch {
-      setHorarios([]);
-    }
-  };
 
   const handleTabChange = (tab) => setSelectedTab(tab);
 
@@ -232,57 +203,6 @@ const StudentPageDados = () => {
     }
   };
 
-  // adicionar horário
-  const handleDisponibilidadeSubmit = async (e) => {
-    e.preventDefault();
-    setMsg(null);
-    setMsgTipo('');
-    if (!data || !horaInicial) {
-      setMsg('Preencha todos os campos de disponibilidade.');
-      setMsgTipo('erro');
-      return;
-    }
-
-    const horaFinal = calcularHoraFinal(horaInicial);
-
-    try {
-      await api.post('/api/availability', {
-        date: data,
-        start_time: horaInicial,
-        end_time: horaFinal
-      });
-      setMsg('Horário adicionado com sucesso!');
-      setMsgTipo('sucesso');
-      setData('');
-      setHoraInicial('');
-      fetchHorarios();
-    } catch (err) {
-      let msgErro = 'Erro ao adicionar horário.';
-      if (err.response && err.response.data && err.response.data.error) {
-        msgErro = err.response.data.error;
-      }
-      setMsg(msgErro);
-      setMsgTipo('erro');
-    }
-  };
-
-  const handleDisponibilidadeCancelar = () => {
-    setData('');
-    setHoraInicial('');
-  };
-
-  // horário com base na hora inicial 
-  const calcularHoraFinal = (horaInicial) => {
-    if (!horaInicial) return '';
-    const [hora, minuto] = horaInicial.split(':').map(Number);
-    const date = new Date();
-    date.setHours(hora);
-    date.setMinutes(minuto);
-    date.setMinutes(date.getMinutes() + 60);
-    return date.toTimeString().slice(0,5);
-  };
-  const horaFinal = calcularHoraFinal(horaInicial);
-
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col bg-blue-50">
@@ -294,18 +214,6 @@ const StudentPageDados = () => {
       </div>
     );
   }
-
-  // deletar horário
-  const handleDeleteHorario = async (id) => {
-  try {
-    await api.delete(`/api/availability/${id}`);
-    fetchHorarios();
-  } catch (err) {
-    setMsg('Erro ao deletar horário.');
-    setMsgTipo('erro');
-  }
-};
-
 
   return (
     <div className="min-h-screen flex flex-col bg-blue-50">
@@ -341,16 +249,6 @@ const StudentPageDados = () => {
                 onClick={() => handleTabChange('academicos')}
               >
                 Dados Acadêmicos
-              </button>
-              <button
-                className={`py-2 px-6 font-medium focus:outline-none ${
-                  selectedTab === 'disponibilidade'
-                    ? 'border-b-2 border-purple-600 text-purple-700'
-                    : 'text-gray-600'
-                }`}
-                onClick={() => handleTabChange('disponibilidade')}
-              >
-                Disponibilidade
               </button>
             </div>
 
@@ -518,89 +416,6 @@ const StudentPageDados = () => {
                 </div>
               </form>
             )}
-
-
-            {/* DISPONIBILIDADE */}
-            {selectedTab === 'disponibilidade' && (
-              <div>
-                <form
-                  className="flex flex-col items-center"
-                  id="form-disponibilidade"
-                  onSubmit={handleDisponibilidadeSubmit}
-                >
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-5 w-full mb-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Data *</label>
-                      <input
-                        type="date"
-                        value={data}
-                        onChange={(e) => setData(e.target.value)}
-                        className="w-full border rounded px-4 py-2"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Horário Inicial *</label>
-                      <input
-                        type="time"
-                        value={horaInicial}
-                        onChange={(e) => setHoraInicial(e.target.value)}
-                        className="w-full border rounded px-4 py-2"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Horário Final</label>
-                      <input
-                        type="time"
-                        value={horaFinal}
-                        readOnly
-                        className="w-full border rounded px-4 py-2 bg-gray-100 text-gray-500 cursor-not-allowed"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex flex-col md:flex-row w-full gap-3">
-                    <button
-                      type="button"
-                      className="flex-1 py-2 rounded bg-purple-700 text-white font-semibold hover:bg-purple-800 transition mb-2 md:mb-0"
-                      onClick={() => {
-                        if (profileCompleted) {
-                          document.getElementById('form-disponibilidade').requestSubmit();
-                        } else {
-                          setOpenWarningProfile(true);
-                        }
-                      }}
-                    >
-                      Adicionar Horário
-                    </button>
-                    <button
-                      type="button"
-                      className="flex-1 py-2 rounded border border-gray-300 text-gray-500 font-semibold hover:bg-gray-50 transition"
-                      onClick={handleDisponibilidadeCancelar}
-                    >
-                      Cancelar
-                    </button>
-                  </div>
-                </form>
-
-                {/* MODAL DE AVISO */}
-                <WarningCompleteProfileStudent
-                  open={openWarningProfile}
-                  onClose={() => setOpenWarningProfile(false)}
-                  onGoToProfile={() => {
-                    setOpenWarningProfile(false);
-                    setSelectedTab('pessoais');
-                  }}
-                />
-
-                {/* LISTA DE HORÁRIOS */}
-                <AvailableTimes horarios={horarios} onDelete={handleDeleteHorario} />
-                
-              </div>
-            )}
-
-
-
           </div>
         </div>
       </main>

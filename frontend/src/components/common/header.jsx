@@ -29,7 +29,11 @@ const Header = () => {
   return (
     <header className="bg-gradient-to-br from-[#7AFFF4] to-[#72FFDF] shadow-md py-4 px-6 flex justify-between items-center border-b border-gray-400">
       <Link to="/">
-        <img src="/logoteste.png" alt="Logo" className="h-10" />
+
+        <img src="../public/icons/logoteste.png" alt="Logo" className="h-10" />
+
+
+
       </Link>
 
       <nav className="flex space-x-4">
@@ -60,6 +64,16 @@ const Header = () => {
 
             {isDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                
+                {user.role === "student" && (
+                  <Link
+                    to="/studentPage-availability"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Meus horários
+                  </Link>
+                )}
+                
                 <Link
                   to={
                     user.role === "patient"

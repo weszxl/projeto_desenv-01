@@ -12,6 +12,7 @@ import PatientPageDados from './pages/patientPage-dados';
 
 import StudentPage from './pages/studentPage';
 import StudentPageDados from './pages/studentPage-dados';
+import StudentPageAvailability from './pages/studentPage-availability';
 
 import VoluntaryPage from './pages/voluntaryPage';
 
@@ -33,6 +34,7 @@ function App() {
 
         <Route path="/studentPage" element={<StudentPage />} />
         <Route path="/studentPage-dados" element={<StudentPageDados />} />
+        <Route path="/studentPage-availability" element={<StudentPageAvailability />} />
 
         <Route path="/adminPage" element={<AdminPage />} />
         
