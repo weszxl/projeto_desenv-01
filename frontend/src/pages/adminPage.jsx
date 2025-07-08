@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/common/header';
 import Footer from '../components/common/footer';
-import NewStudent from '../components/admin/newStudent';
+import NewProfessor from '../components/admin/newProfessor';
 import { api } from '../api/axiosConfig';
 
 const AdminPage = () => {
@@ -9,10 +9,10 @@ const AdminPage = () => {
   const [filtroTipo, setFiltroTipo] = useState('Todos os tipos');
   const [filtroStatus, setFiltroStatus] = useState('Todos os status');
   const tiposUsuario = [
-    'Estudante',
     'Professor',
+    'Estudante'
   ];
-  const [showNewStudent, setShowNewStudent] = useState(false);
+  const [showNewProfessor, setShowNewProfessor] = useState(false);
 
   const [users, setUsers] = useState([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
@@ -37,20 +37,29 @@ const AdminPage = () => {
   }, []);
 
   const filteredUsers = users.filter(user => {
+    const nome = user.name || user.nome || '';
+    const email = user.email || '';
+    const tipo =
+      (user.role === 'professor' && 'Professor') ||
+      (user.role === 'student' && 'Estudante') ||
+      user.tipo ||
+      '';
+    const status = user.status || 'ativo';
+
     const matchesBusca =
-      user.nome?.toLowerCase().includes(busca.toLowerCase()) ||
-      user.email?.toLowerCase().includes(busca.toLowerCase());
+      nome.toLowerCase().includes(busca.toLowerCase()) ||
+      email.toLowerCase().includes(busca.toLowerCase());
     const matchesTipo =
-      filtroTipo === 'Todos os tipos' || user.tipo === filtroTipo;
+      filtroTipo === 'Todos os tipos' || tipo === filtroTipo;
     const matchesStatus =
       filtroStatus === 'Todos os status' ||
-      (filtroStatus === 'Ativo' && user.status === 'ativo') ||
-      (filtroStatus === 'Inativo' && user.status === 'inativo');
+      (filtroStatus === 'Ativo' && status === 'ativo') ||
+      (filtroStatus === 'Inativo' && status === 'inativo');
     return matchesBusca && matchesTipo && matchesStatus;
   });
 
-  const handleSaveStudent = () => {
-    setShowNewStudent(false);
+  const handleSaveProfessor = () => {
+    setShowNewProfessor(false);
     fetchUsers();
   };
 
@@ -95,17 +104,13 @@ const AdminPage = () => {
               <div className="flex gap-3">
                 <button
                   className="flex items-center gap-2 bg-purple-700 hover:bg-purple-800 text-white font-semibold px-6 py-2 rounded-lg shadow transition"
-                  onClick={() => setShowNewStudent(true)}
+                  onClick={() => setShowNewProfessor(true)}
                 >
-                  + Novo Estudante
-                </button>
-                <button className="flex items-center gap-2 bg-purple-700 hover:bg-purple-800 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
                   + Novo Professor
                 </button>
               </div>
             </div>
 
-            {/* FILTROS DE BUSCA */}
             <div className="flex flex-col md:flex-row items-center gap-3 mb-7">
               <input
                 type="text"
@@ -161,17 +166,25 @@ const AdminPage = () => {
                       </td>
                     </tr>
                   ) : (
-                    filteredUsers.map(user => (
-                      <tr key={user.id}>
-                        <td className="p-3">{user.nome}</td>
-                        <td className="p-3">{user.email}</td>
-                        <td className="p-3">{user.tipo || "Estudante"}</td>
-                        <td className="p-3 capitalize">{user.status || "ativo"}</td>
-                        <td className="p-3">{user.ultimoAcesso ? new Date(user.ultimoAcesso).toLocaleString() : "-"}</td>
-                        <td className="p-3">
-                        </td>
-                      </tr>
-                    ))
+                    filteredUsers.map(user => {
+                      const tipo =
+                        (user.role === 'professor' && 'Professor') ||
+                        (user.role === 'student' && 'Estudante') ||
+                        user.tipo ||
+                        '';
+                      const nome = user.name || user.nome || '';
+                      const status = user.status || 'ativo';
+                      return (
+                        <tr key={user.id}>
+                          <td className="p-3">{nome}</td>
+                          <td className="p-3">{user.email}</td>
+                          <td className="p-3">{tipo}</td>
+                          <td className="p-3 capitalize">{status}</td>
+                          <td className="p-3">{user.ultimoAcesso ? new Date(user.ultimoAcesso).toLocaleString() : "-"}</td>
+                          <td className="p-3"></td>
+                        </tr>
+                      );
+                    })
                   )}
                 </tbody>
               </table>
@@ -189,7 +202,11 @@ const AdminPage = () => {
             </div>
           </div>
         </main>
-        <NewStudent open={showNewStudent} onClose={() => setShowNewStudent(false)} onSave={handleSaveStudent} />
+        <NewProfessor
+          open={showNewProfessor}
+          onClose={() => setShowNewProfessor(false)}
+          onSave={handleSaveProfessor}
+        />
       </div>
       <Footer />
     </div>
