@@ -4,23 +4,25 @@ exports.up = function(knex) {
     table.integer('user_id').notNullable().unique()
       .references('id').inTable('users')
       .onDelete('CASCADE');
-    // dados Pessoais
-    table.string('phone');
-    table.date('birth_date');
-    table.string('cep');
-    table.text('about_me'); 
-    table.string('photo_url');
-    
-    // dados acadêmicos
-    table.string('course_name').notNullable();
-    table.string('institution').notNullable();
-    table.integer('semester').notNullable();
-    table.string('register_number').notNullable();
+      
+    table.integer('professor_id').notNullable()
+      .references('id').inTable('users')
+      .onDelete('CASCADE');
+
+    table.string('phone').nullable();
+    table.date('birth_date').nullable();
+    table.string('cep').nullable();
+    table.text('about_me').nullable();
+    table.string('photo_url').nullable();
+
+    table.string('course_name').nullable();
+    table.string('institution').nullable();
+    table.integer('semester').nullable();
+    table.string('register_number').nullable();
     table.enum('academic_status', ['active', 'locked']).defaultTo('active');
-    table.date('start_date').notNullable();
-    table.date('end_date').notNullable();
-    table.string('enrolment_url');
-    
+    table.date('start_date').nullable();
+    table.date('end_date').nullable();
+    table.string('enrolment_url').nullable();
     table.boolean('profile_completed').defaultTo(false);
     table.timestamps(true, true);
   });

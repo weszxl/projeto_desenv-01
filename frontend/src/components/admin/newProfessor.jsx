@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { api } from '../../api/axiosConfig';
 
-
-const NewStudent = ({ open, onClose, onSave }) => {
+const NewProfessor = ({ open, onClose, onSave }) => {
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -23,14 +22,14 @@ const NewStudent = ({ open, onClose, onSave }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name || !form.email || !form.cpf || !form.password) {
-      setError('Preencha todos os campos obrigatórios.');
+    if (!form.name || !form.email || !form.password) {
+      setError('Preencha todos os campos.');
       return;
     }
 
     try {
       await api.post(
-        '/users/register/student',
+        '/users/register/professor',
         {
           name: form.name,
           email: form.email,
@@ -38,7 +37,7 @@ const NewStudent = ({ open, onClose, onSave }) => {
           password: form.password
         }
       );
-      setSuccess('Estudante cadastrado com sucesso!');
+      setSuccess('Professor cadastrado!');
       setForm({
         name: '',
         email: '',
@@ -53,7 +52,7 @@ const NewStudent = ({ open, onClose, onSave }) => {
     } catch (err) {
       setError(
         err.response?.data?.error ||
-        'Erro ao cadastrar estudante. Verifique se o CPF ou e-mail já existe.'
+        'Erro ao cadastrar professor.'
       );
     }
   };
@@ -80,7 +79,7 @@ const NewStudent = ({ open, onClose, onSave }) => {
         >
           &times;
         </button>
-        <h3 className="text-xl font-bold text-purple-700 mb-6">Cadastrar Novo Estudante</h3>
+        <h3 className="text-xl font-bold text-purple-700 mb-6">Cadastrar Novo Professor</h3>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Nome *</label>
@@ -105,14 +104,14 @@ const NewStudent = ({ open, onClose, onSave }) => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">CPF *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">CPF</label>
             <input
               type="text"
               name="cpf"
               value={form.cpf}
               onChange={handleChange}
               className="w-full border rounded px-4 py-2 bg-gray-50"
-              required
+              placeholder="Opcional"
             />
           </div>
           <div>
@@ -149,4 +148,4 @@ const NewStudent = ({ open, onClose, onSave }) => {
   );
 };
 
-export default NewStudent;
+export default NewProfessor;

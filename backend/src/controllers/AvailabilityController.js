@@ -70,6 +70,8 @@ class AvailabilityController {
     try {
       const results = await db('availability')
         .join('users', 'availability.student_id', '=', 'users.id')
+        .join('student_profiles', 'student_profiles.user_id', '=', 'users.id')
+        .join('users as professor', 'student_profiles.professor_id', '=', 'professor.id')
         .where('availability.date', date)
         .andWhere('users.role', 'student')
         .andWhere('availability.status', 'available')
@@ -80,7 +82,11 @@ class AvailabilityController {
           'availability.end_time',
           'availability.specialty',
           'users.id as student_id',
-          'users.name as student_name'
+          'users.name as student_name',
+          'student_profiles.course_name',
+          'student_profiles.about_me',
+          'student_profiles.photo_url',
+          'professor.name as professor_name'
         );
       res.json(results);
     } catch (err) {
@@ -88,6 +94,7 @@ class AvailabilityController {
       res.status(500).json({ error: 'erro na busca' });
     }
   }
+
 
   static async delete(req, res) {
     const { id } = req.params;

@@ -34,7 +34,7 @@ const AppointmentMenu = ({ open, onClose }) => {
     setAgendandoId(slot.id);
     try {
       await api.post('/api/appointments', { slot_id: slot.id });
-      alert('Agendamento realizado com sucesso!');
+      alert('Agendamento realizado!');
       onClose();
     } catch (error) {
       alert(error?.response?.data?.error || "Erro ao agendar.");
@@ -43,7 +43,6 @@ const AppointmentMenu = ({ open, onClose }) => {
     }
   };
 
-  // Buscar estudantes só quando calendarOpen = false, selectedDate e tipo estão definidos
   useEffect(() => {
     const buscarDisponiveis = async (date, tipo) => {
       if (!date) {
@@ -64,7 +63,6 @@ const AppointmentMenu = ({ open, onClose }) => {
         setLoadingDisponiveis(false);
       }
     };
-    // Só busca se o calendário está fechado e data/tipo estão definidos
     if (!calendarOpen && selectedDate && tipo) {
       buscarDisponiveis(selectedDate, tipo);
     } else {
@@ -102,7 +100,7 @@ const AppointmentMenu = ({ open, onClose }) => {
                 selected={selectedDate}
                 onSelect={date => {
                   setSelectedDate(date);
-                  if (date) setCalendarOpen(false); // Fecha calendário ao escolher
+                  if (date) setCalendarOpen(false); 
                 }}
                 fromDate={today}
                 toDate={lastAllowedDate}
@@ -129,7 +127,7 @@ const AppointmentMenu = ({ open, onClose }) => {
                 className="text-xs text-purple-700 underline hover:text-purple-900 ml-2"
                 onClick={() => {
                   setCalendarOpen(true);
-                  setDisponiveis([]); // Esconde estudantes ao reabrir calendário
+                  setDisponiveis([]); 
                 }}
               >
                 Alterar
@@ -170,6 +168,17 @@ const AppointmentMenu = ({ open, onClose }) => {
                     <div>
                       <div className="font-semibold text-gray-800 text-base">{slot.student_name}</div>
                       <div className="text-sm text-gray-700">{slot.course_name || slot.specialty}</div>
+                      
+                      {slot.professor_name && (
+                          <div className="text-xs text-gray-500 mt-1">
+                            Professor responsável: <span className="font-medium">{slot.professor_name}</span>
+                          </div>
+                        )}
+                      
+
+                      
+                      
+                      
                       <div className="text-xs text-gray-600 mt-2">
                         {slot.about_me && slot.about_me.trim() !== '' ? slot.about_me : 'Sem informação'}
                       </div>

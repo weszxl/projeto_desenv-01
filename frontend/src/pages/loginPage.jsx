@@ -36,6 +36,10 @@ const LoginPage = () => {
         case 'admin':
           navigate('/adminPage');
           break;
+        case 'professor':
+          navigate('/professorPage');
+          break;
+
         default:
           navigate('/');
       }

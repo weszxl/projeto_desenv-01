@@ -18,6 +18,8 @@ import VoluntaryPage from './pages/voluntaryPage';
 
 import AdminPage from './pages/adminPage';
 
+import ProfessorPage from './pages/professorPage';
+
 
 function App() {
   return (
@@ -37,8 +39,9 @@ function App() {
         <Route path="/studentPage-availability" element={<StudentPageAvailability />} />
 
         <Route path="/adminPage" element={<AdminPage />} />
-        
 
+        <Route path="/professorPage" element={<ProfessorPage />} />
+        
         <Route path="/voluntaryPage" element={<VoluntaryPage />} />
 
 

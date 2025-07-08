@@ -10,4 +10,7 @@ router.post('/register/student', UserController.registerStudent);
 router.get('/', UserController.listUsers);
 router.get('/:id', UserController.getUserById);
 
+router.post('/register/professor', UserController.registerProfessor);
+router.get('/professor/students', UserController.listMyStudents);
+
 module.exports = router;
