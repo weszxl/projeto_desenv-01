@@ -60,7 +60,7 @@ const LoginPage = () => {
 
   return (
     <div className="h-screen w-screen overflow-hidden flex bg-white">
-      <div className="hidden md:flex w-1/2 bg-gradient-to-br from-[#7AFFF4] to-[#72FFDF] relative items-center justify-center p-8">
+      <div className="hidden md:flex w-1/2 bg-gradient-to-r from-[#10ffbf] to-[#56f6e8] relative items-center justify-center p-8">
         <img
           src="/images/psychology-illustration.png"
           alt="Ilustração com tema de psicologia"

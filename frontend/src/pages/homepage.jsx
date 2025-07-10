@@ -1,25 +1,43 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, ChevronDown } from 'lucide-react';
+
 import Header from '../components/common/header';
 import Footer from '../components/common/footer';
 
 const HomePage = () => {
-  const flashcards = [
-    { image: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTe930RYtIMySmrb9qOc0czMjAK_MD3qR8NvZNpD2JQmEu-wpHHPEFbPI9NoUOT", title: "Serviço 1", content: "Descrição detalhada do nosso primeiro serviço. Foco na qualidade e inovação." },
-    { image: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTe930RYtIMySmrb9qOc0czMjAK_MD3qR8NvZNpD2JQmEu-wpHHPEFbPI9NoUOT", title: "Serviço 2", content: "Nosso segundo serviço oferece suporte completo e resultados garantidos." },
-    { image: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTe930RYtIMySmrb9qOc0czMjAK_MD3qR8NvZNpD2JQmEu-wpHHPEFbPI9NoUOT", title: "Serviço 3", content: "Conheça nosso terceiro serviço, pensado para suas necessidades específicas." },
-  ];
-  const usageItems = [
-    { icon: '💲', title: "MODO DE USO OU SLA", description: "Um monte de informação sobre o uso da plataforma e mais alguma coisa." },
-    { icon: '⏰', title: "MODO DE USO OU SLA", description: "Um monte de informação sobre o uso da plataforma e mais alguma coisa." },
-    { icon: '➕', title: "MODO DE USO OU SLA", description: "Um monte de informação sobre o uso da plataforma e mais alguma coisa." }
-  ];
+  // const flashcards = [
+  //   { image: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTe930RYtIMySmrb9qOc0czMjAK_MD3qR8NvZNpD2JQmEu-wpHHPEFbPI9NoUOT", title: "Serviço 1", content: "Descrição detalhada do nosso primeiro serviço. Foco na qualidade e inovação." },
+  //   { image: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTe930RYtIMySmrb9qOc0czMjAK_MD3qR8NvZNpD2JQmEu-wpHHPEFbPI9NoUOT", title: "Serviço 2", content: "Nosso segundo serviço oferece suporte completo e resultados garantidos." },
+  //   { image: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTe930RYtIMySmrb9qOc0czMjAK_MD3qR8NvZNpD2JQmEu-wpHHPEFbPI9NoUOT", title: "Serviço 3", content: "Conheça nosso terceiro serviço, pensado para suas necessidades específicas." },
+  // ];
+  // const usageItems = [
+  //   { icon: '💲', title: "MODO DE USO OU SLA", description: "Um monte de informação sobre o uso da plataforma e mais alguma coisa." },
+  //   { icon: '⏰', title: "MODO DE USO OU SLA", description: "Um monte de informação sobre o uso da plataforma e mais alguma coisa." },
+  //   { icon: '➕', title: "MODO DE USO OU SLA", description: "Um monte de informação sobre o uso da plataforma e mais alguma coisa." }
+  // ];
 
   const faqItems = [
-    { question: "EXEMPLO 1", answer: "Aqui está a resposta detalhada para o Exemplo 1. Pode ser um texto mais longo explicando a dúvida." },
-    { question: "EXEMPLO 2", answer: "Detalhes adicionais sobre o Exemplo 2. Clique para saber mais!" },
-    { question: "EXEMPLO 3", answer: "Informações completas sobre o Exemplo 3. Tente clicar para ver mais!" },
-    { question: "EXEMPLO 4", answer: "Mais detalhes sobre o Exemplo 4." },
-    { question: "EXEMPLO 5", answer: "A resposta final para o Exemplo 5." },
+      {
+        question: "A consulta é realmente gratuita?",
+        answer: "Sim, todas as consultas realizadas na plataforma são 100% gratuitas. Nosso objetivo é oferecer cuidado acessível enquanto proporcionamos experiência prática para os estudantes."
+      },
+      {
+        question: "Quem são os estudantes que realizam o atendimento?",
+        answer: "São alunos devidamente matriculados em suas instituições. Todos os alunos são supervisionados por professores responsáveis."
+      },
+      {
+        question: "Meus dados e conversas são confidenciais?",
+        answer: "Absolutamente. A plataforma segue rigorosas políticas de privacidade e segurança. As informações da consulta são confidenciais e protegidas, acessíveis apenas por você, pelo estudante e pelo professor supervisor."
+      },
+      {
+        question: "Como faço para agendar uma consulta?",
+        answer: "Após se cadastrar, você pode selecionar o dia de preferência para a consulta e vizualizar os horários e estudantes disponíveis para aquele dia, escolhendo o que melhor se encaixa para você. A confirmação é feita com apenas alguns cliques."
+      },
+      {
+        question: "Posso escolher o estudante que vai me atender?",
+        answer: "Sim. Você tem a liberdade de visualizar os horários disponíveis e agendar com o estudante de sua preferência, de acordo com a disponibilidade de cada um."
+      },
   ];
 
   const [openIndex, setOpenIndex] = useState(null);
@@ -33,122 +51,175 @@ const HomePage = () => {
       <Header />
 
       <main>
-        <section className="py-20 px-6 min-h-[86vh] flex items-center bg-gradient-to-br from-[#7AFFF4] to-[#72FFDF] border-b border-gray-400">
-          <div className="max-w-5xl mx-auto text-center w-full">
-            <h1 className="text-4xl md:text-5xl font-semibold min-h-[20vh] text-gray-800 mb-12 leading-tight">
-              O <strong className='font semibold'>Nome Dramático</strong> alguma coisa sla o que,<br />
-              <span className="text-gray-800">não sei o que lá mais palavras.</span>
-            </h1>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
-              {flashcards.map((card, index) => (
-                <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition p-6 w-full max-w-sm" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  {card.image && (
-                    <img
-                      src={card.image}
-                      alt={`Imagem do flashcard ${index + 1}`}
-                      className="w-3/4 sm:w-2/3 md:w-full h-auto mb-4 rounded object-cover mx-auto"
-                      style={{
-                        maxWidth: '150px',
-                        maxHeight: '150px'
-                      }}
-                    />
-                  )}
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2 text-center">{card.title}</h3>
-                  <p className="text-sm sm:text-base text-gray-700 text-center">{card.content}</p>
+        {/* SEÇÃO INICIAL / CARDS */}
+        <section className="py-20 px-6 min-h-[86vh] flex items-start bg-gradient-to-r from-[#10ffbf] to-[#56f6e8]">
+            <div className="max-w-5xl mx-auto text-center w-full">
+                <h1 className="text-5xl md:text-6xl text-gray-800 mb-32 leading-tight">
+                    <span className="font-normal">Conectando</span>{' '}
+                    <span className="font-bold">Futuros Profissionais</span>{' '}
+                    <span className="font-normal">a quem</span>{' '}
+                    <span className="font-bold">Precisa.</span>
+                </h1>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 justify-items-center">
+                    {/* CARD 1 */}
+                    <a href="#" className="group bg-white rounded-xl shadow-lg hover:shadow-xl transition p-6 w-full max-w-sm flex flex-col text-left">
+                        <div className="w-full h-48 mb-6 bg-gray-100 rounded-lg">
+                            <img src="/icons/icon-card_2.png" className="w-full h-full object-cover rounded-lg" alt="Paciente" />
+                        </div>
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <h3 className="text-lg font-bold text-gray-800">Saiba seu papel como paciente</h3>
+                                <p className="text-sm text-gray-500 mt-1">Ajude na formação de um futuro profissional.</p>
+                            </div>
+                            <ArrowRight className="text-gray-400 ml-4 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+                        </div>
+                    </a>
+
+                    {/* CARD 2 */}
+                    <a href="#" className="group bg-white rounded-xl shadow-lg hover:shadow-xl transition p-6 w-full max-w-sm flex flex-col text-left">
+                        <div className="w-full h-48 mb-6 bg-gray-100 rounded-lg">
+                            <img src="/icons/icon-card_1.png" className="w-full h-full object-cover rounded-lg" alt="Paciente" />
+                        </div>
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <h3 className="text-lg font-bold text-gray-800">Quem realiza seu atendimento?</h3>
+                                <p className="text-sm text-gray-500 mt-1">Estudantes dedicados sob a supervisão de professores.</p>
+                            </div>
+                            <ArrowRight className="text-gray-400 ml-4 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+                        </div>
+                    </a>
+
+                    {/* CARD 3 */}
+                    <a href="#" className="group bg-white rounded-xl shadow-lg hover:shadow-xl transition p-6 w-full max-w-sm flex flex-col text-left">
+                        <div className="w-full h-48 mb-6 bg-gray-100 rounded-lg">
+                            <img src="/icons/icon-card_3.png" className="w-full h-full object-cover rounded-lg" alt="Paciente" />
+                        </div>
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <h3 className="text-lg font-bold text-gray-800">Nossa Missão</h3>
+                                <p className="text-sm text-gray-500 mt-1">Tornar o cuidado e o aprendizado mais acessíveis para todos.</p>
+                            </div>
+                            <ArrowRight className="text-gray-400 ml-4 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+                        </div>
+                    </a>
                 </div>
-              ))}
             </div>
-          </div>
         </section>
 
-        <section className="py-20 px-6 bg-blue-100 border-b border-gray-400 flex items-center min-h-[95vh]">
-          <div className="max-w-6xl mx-auto text-center w-full">
-            <h2 className="text-4xl font-extrabold text-gray-800 mb-4">USO DA PLATAFORMA</h2>
-            <div className="inline-block bg-blue-700 text-white text-xl font-semibold py-2 px-8 rounded-full mb-16 shadow-md">
-              USO PLATAF
-            </div>
-
-            <div className="flex flex-col md:flex-row items-center md:items-start md:space-x-12">
-
-              <div className="w-full md:w-1/2 mb-8 md:mb-0">
-                <div className="relative pt-[65%] bg-gray-200 rounded-lg shadow-md overflow-hidden">
-                  <iframe
-                    className="absolute top-0 left-0 w-full h-full"
-                    src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                    title="YouTube video player"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
+        {/* SEÇÃO DE USO */}
+        <section className="py-20 px-6 bg-blue-100 flex items-start justify-center min-h-[95vh]">
+            <div className="max-w-6xl mx-auto text-center w-full">
+                <h2 className="text-5xl font-extrabold text-gray-800 mb-4">Como nossa plataforma funciona</h2>
+                
+                <div className="inline-block bg-blue-700 text-white text-5xl font-semibold py-4 px-10 rounded-xl mb-16 shadow-md">
+                    SIMPLES E RÁPIDO
                 </div>
-              </div>
 
-              <div className="w-full md:w-1/2">
-                <div className="space-y-8">
-                  {usageItems.map((item, index) => (
-                    <div key={index} className="flex items-center bg-white p-6 rounded-lg shadow-md">
-                      <div className="flex-shrink-0 w-12 h-12 mr-4 flex items-center justify-center bg-blue-500 rounded-full text-white text-3xl font-bold">
-                        {item.icon}
-                      </div>
-                      <div className="flex-1 text-left">
-                        <h3 className="text-xl font-bold text-gray-800 leading-tight mb-1">{item.title}</h3>
-                        <p className="text-base text-gray-700 leading-snug">{item.description}</p>
-                      </div>
+                <div className="flex flex-col md:flex-row gap-12 md:gap-16">
+
+                    <div className="w-full md:w-3/8">
+                        <div className="relative pt-[90%] bg-gray-200 rounded-lg shadow-md overflow-hidden flex items-center justify-center">
+                            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                                <svg className="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                                </svg>
+                            </div>
+                        </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        <section className="py-12 px-6 bg-gray-50">
-          <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-start">
-            <div className="w-full md:w-1/2 mb-8 md:mb-0">
-              <h2 className="text-4xl font-bold text-gray-800 text-left mb-6">Ainda com dúvidas?</h2>
-            </div>
+                    <div className="w-full md:w-5/8 flex">
+                        <div className="flex flex-col justify-between h-full w-full">
+                            <div className="flex items-start gap-4 text-left">
+                                <div className="flex-shrink-0 w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
+                                  <img src="/icons/icon-register.png" className="w-full h-full object-cover rounded-lg" alt="Paciente" />
+                                </div>
+                                <div>
+                                    <h3 className="text-2xl font-bold text-gray-800">Cadastre-se Gratuitamente</h3>
+                                    <p className="text-lg text-gray-700 mt-1">Crie sua conta em poucos minutos para ter acesso completo a nossa plataforma.</p>
+                                </div>
+                            </div>
 
-            <div className="w-full md:w-1/2 md:pl-8">
-              <div className="space-y-4 mb-8">
-                {faqItems.map((item, index) => (
-                  <div key={index} className="bg-white rounded-lg shadow p-4 cursor-pointer" onClick={() => toggleDropdown(index)}>
-                    <div className="flex justify-between items-center">
-                      <p className="text-gray-800 font-semibold">{item.question}</p>
-                      <span>{openIndex === index ? '▲' : '▼'}</span>
+                            <div className="flex items-start gap-4 text-left">
+                                <div className="flex-shrink-0 w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
+                                  <img src="/icons/icon-calendar.png" className="w-full h-full object-cover rounded-lg" alt="Paciente" />
+                                </div>
+                                <div>
+                                    <h3 className="text-2xl font-bold text-gray-800">Encontre um Horário</h3>
+                                    <p className="text-lg text-gray-700 mt-1">Navegue pela agenda dos estudantes, escolha a data e o horário ideais e confirme sua consulta com apenas um clique.</p>
+                                </div>
+                            </div>
+
+                            <div className="flex items-start gap-4 text-left">
+                                <div className="flex-shrink-0 w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
+                                  <img src="/icons/icon-teleconsult.png" className="w-full h-full object-cover rounded-lg" alt="Paciente" />
+                                </div>
+                                <div>
+                                    <h3 className="text-2xl font-bold text-gray-800">Participe da Consulta Online</h3>
+                                    <p className="text-lg text-gray-700 mt-1">No dia marcado, acesse o link da sua consulta e receba o atendimento de um estudante.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    {openIndex === index && (
-                      <div className="mt-2 text-gray-600">
-                        {item.answer}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-
-              <p className="text-lg text-gray-700 mb-4">
-                Have more questions? Contact us at{" "}
-                <a
-                  href="https://L1NK-LINK4DO.com.br"
-                  className="text-blue-600 hover:underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  https://L1NK-LINK4DO.com.br
-                </a>
-              </p>
-              <p className="text-lg text-gray-700">
-                Você é um estudante?{" "}
-                <a
-                  href="#"
-                  className="text-blue-600 hover:underline font-medium"
-                >
-                  Acesse suas instruções aqui
-                </a>
-              </p>
+                </div>
             </div>
-          </div>
         </section>
+
+        {/* SEÇÃO FAQ */}
+        <section className="py-20 px-6 bg-[#F8F9F9]">
+            <div className="w-4/5 mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+                <div className="w-full md:w-2/5">
+                    <h2 className="text-5xl font-bold text-gray-800 text-right pr-8">Ainda com dúvidas?</h2>
+                </div>
+
+                <div className="w-full md:w-3/5">
+                    <div className="border-t border-gray-200">
+                        {faqItems.map((item, index) => (
+                            <div key={index} className="border-b border-gray-200">
+                                <button
+                                    onClick={() => toggleDropdown(index)}
+                                    className="w-full flex justify-between items-center py-4 text-left"
+                                >
+                                    <span className="text-xl text-gray-800">{item.question}</span>
+                                    <ChevronDown
+                                        className={`w-6 h-6 text-gray-500 transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`}
+                                    />
+                                </button>
+                                
+                                <div
+                                    className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                                        openIndex === index ? 'max-h-96' : 'max-h-0'
+                                    }`}
+                                >
+                                    <div className="pb-4 pr-8 pt-2 text-gray-600">
+                                        <p>{item.answer}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="mt-8 text-left text-base text-gray-600 space-y-2">
+                        <p>
+                            Tem mais alguma pergunta? Confira nosso FAQ completo{' '}
+                            <a href="#" className="text-blue-600 font-semibold hover:underline">
+                                aqui
+                            </a>
+                            .
+                        </p>
+                        <p>
+                            Você é um estudante?{' '}
+                            <a href="#" className="text-blue-600 font-semibold hover:underline">
+                                Acesse suas instruções aqui
+                            </a>
+                            .
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
       </main>
 
       <Footer />
