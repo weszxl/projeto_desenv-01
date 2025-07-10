@@ -27,8 +27,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-gradient-to-br from-[#7AFFF4] to-[#72FFDF] shadow-md py-4 px-6 flex justify-between items-center border-b border-gray-400">
-      <Link to="/">
+    <header className="bg-gradient-to-r from-[#10ffbf] to-[#56f6e8] shadow-md py-4 px-6 flex justify-between items-center">      <Link to="/">
 
         <img src="../icons/logoteste.png" alt="Logo" className="h-10" />
 
