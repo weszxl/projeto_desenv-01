@@ -1,7 +1,6 @@
 # PsicoFacil
 
 ![Badge](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
-![Badge](https://img.shields.io/badge/licen%C3%A7a-ISC-blue)
 
 ## Sobre o Projeto
 
