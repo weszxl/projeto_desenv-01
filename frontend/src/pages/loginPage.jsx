@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { api } from '../api/axiosConfig';
-import { useLocation } from 'react-router-dom';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -58,19 +57,17 @@ const LoginPage = () => {
     }
   };
 
-  return (
+return (
     <div className="h-screen w-screen overflow-hidden flex bg-white">
       <div className="hidden md:flex w-1/2 bg-gradient-to-r from-[#10ffbf] to-[#56f6e8] relative items-center justify-center p-8">
         <img
-          src="/images/psychology-illustration.png"
+          src="/icons/homePage/login-icon.png"
           alt="Ilustração com tema de psicologia"
           className="max-w-[75%] h-auto object-contain"
         />
 
-        <div className="absolute bottom-8 left-8 text-blue-800 text-base font-semibold">
-          <div className="flex items-center gap-1">
-            <span>APP Health</span>
-          </div>
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-center">
+            <img src="/icons/logoteste.png" alt="Logo APP Health" className="h-12" />
         </div>
       </div>
 
@@ -151,12 +148,12 @@ const LoginPage = () => {
             </Link>
           </div>
         </div>
-
-        <div className="w-full text-xs text-gray-500 flex flex-wrap justify-center gap-6 mt-12 text-center">
-          <a href="#" className="hover:underline">Contact</a>
-          <a href="#" className="hover:underline">Guide</a>
-          <a href="#" className="hover:underline">FAQ</a>
-          <a href="#" className="hover:underline">Report Vulnerability</a>
+        
+        <div className="absolute bottom-8 left-0 right-0 text-xs flex flex-wrap justify-center gap-6 text-center">
+          <a href="#" className="text-gray-500 hover:underline">Contact</a>
+          <a href="#" className="text-gray-500 hover:underline">Guide</a>
+          <a href="#" className="text-gray-500 hover:underline">FAQ</a>
+          <a href="#" className="text-gray-500 hover:underline">Report Vulnerability</a>
         </div>
 
       </div>
