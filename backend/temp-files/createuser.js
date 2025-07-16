@@ -81,16 +81,15 @@ async function seed() {
 
   // Estudantes
   const estudantes = [
-    // Jailson: 3 estudantes
     { name: 'Clara Frufru', email: 'clara@fru.com', password: 'senha123', professorIdx: 0, completo: true },
     { name: 'João Goulart', email: 'jango@jango.com', password: 'senha123', professorIdx: 0, completo: true },
     { name: 'Milena Cintia', email: 'uml@cintia.com', password: 'senha123', professorIdx: 0, completo: false },
-    // Maria: 3 estudantes
     { name: 'Cypher da Silva', email: 'cysilva@cypher.com', password: 'senha123', professorIdx: 1, completo: true },
     { name: 'Muriel Vargas', email: 'muri@vargas.com', password: 'senha123', professorIdx: 1, completo: true },
     { name: 'Maria Euclides', email: '3maria@clides.com', password: 'senha123', professorIdx: 1, completo: false }
   ];
 
+  // Guarda os IDs dos estudantes e seus perfis completos
   const estudantesCompletos = [];
   const estudanteIds = [];
 
@@ -154,10 +153,12 @@ async function seed() {
     }
   }
 
+  // Criar horários (availability) e consultas (appointments) para os estudantes com perfil completo
   for (let i = 0; i < estudantesCompletos.length; i++) {
     const estudanteId = estudantesCompletos[i].id;
     const especialidade = 'Psicologia';
 
+    // Dois horários disponíveis para cada estudante
     const horarios = [
       { date: '2024-06-10', start_time: '09:00', end_time: '10:00', status: 'available' },
       { date: '2024-06-11', start_time: '14:00', end_time: '15:00', status: 'available' }
@@ -227,7 +228,9 @@ async function seed() {
     });
   }
 
+  // ADICIONA horários de disponibilidade para dia 16/07/2025 para dois estudantes de perfil completo
   if (estudantesCompletos.length >= 2) {
+    // Clara Frufru (primeiro estudante completo) - 09:45
     await knex('availability').insert({
       student_id: estudantesCompletos[0].id,
       date: '2025-07-16',
@@ -236,6 +239,7 @@ async function seed() {
       specialty: 'Psicologia',
       status: 'available'
     });
+    // João Goulart (segundo estudante completo) - 11:00
     await knex('availability').insert({
       student_id: estudantesCompletos[1].id,
       date: '2025-07-16',
