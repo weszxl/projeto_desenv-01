@@ -16,7 +16,7 @@ const app = express();
 
 // ligação com frontend
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://projeto-desenv-01-front.onrender.com',
   credentials: true, // permitir cookies
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']
 }));
@@ -85,7 +85,6 @@ app.get('/auth/google/callback', async (req, res) => {
 //     console.error('Erro ao criar admin:', err);
 //   }
 // })();
-
 
 const PORT = process.env.PORT || 3050;
 app.listen(PORT, () => {
