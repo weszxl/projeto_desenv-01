@@ -62,6 +62,7 @@ class PatientProfileController {
         ...profile
       });
     } catch (e) {
+      console.error('Erro detalhado:', e);
       res.status(500).json({ error: 'Erro ao atualizar perfil' });
     }
   }
