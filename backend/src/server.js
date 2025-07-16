@@ -62,6 +62,30 @@ app.get('/auth/google/callback', async (req, res) => {
   }
 });
 
+const bcrypt = require('bcryptjs');
+const knex = require('./config/database');
+
+(async () => {
+  try {
+    const admin = await knex('users').where({ email: 'admin@exemplo.com' }).first();
+    if (!admin) {
+      const hash = await bcrypt.hash('admin123', 10);
+      await knex('users').insert({
+        name: 'Admin',
+        email: 'admin@exemplo.com',
+        password_hash: hash,
+        role: 'admin',
+        cpf: null
+      });
+      console.log('Usuário admin criado automaticamente!');
+    } else {
+      console.log('Usuário admin já existe. Não será criado novamente.');
+    }
+  } catch (err) {
+    console.error('Erro ao criar admin:', err);
+  }
+})();
+
 const PORT = process.env.PORT || 3050;
 app.listen(PORT, () => {
   console.log(`o serve ta online | http://localhost:${PORT}`);
