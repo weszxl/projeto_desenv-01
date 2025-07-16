@@ -4,7 +4,7 @@
   "description": "sla cara",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js",
+    "start": "node temp-files/createuser.js && node src/server.js",
     "dev": "nodemon src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
