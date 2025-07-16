@@ -3,49 +3,60 @@
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
-module.exports = {
 
+require('dotenv').config();
+
+module.exports = {
   development: {
-    client: "sqlite3",
+    client: 'pg',
     connection: {
-      filename: "./dev.sqlite3",
+      host: process.env.PG_HOST,
+      user: process.env.PG_USER,
+      password: process.env.PG_PASSWORD,
+      database: process.env.PG_DATABASE,
+      port: process.env.PG_PORT || 5432
     },
     migrations: {
-      directory: "./src/database/migrations", 
-    },
-    useNullAsDefault: true, 
+      directory: './src/database/migrations'
+    }
+
   },
 
   staging: {
-    client: 'postgresql',
+    client: 'pg',
     connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
+      host: process.env.PG_HOST,
+      user: process.env.PG_USER,
+      password: process.env.PG_PASSWORD,
+      database: process.env.PG_DATABASE,
+      port: process.env.PG_PORT || 5432
     },
     pool: {
       min: 2,
       max: 10
     },
     migrations: {
+      directory: './src/database/migrations',
       tableName: 'knex_migrations'
     }
   },
 
   production: {
-    client: 'postgresql',
+    client: 'pg',
     connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
+      host: process.env.PG_HOST,
+      user: process.env.PG_USER,
+      password: process.env.PG_PASSWORD,
+      database: process.env.PG_DATABASE,
+      port: process.env.PG_PORT || 5432
     },
     pool: {
       min: 2,
       max: 10
     },
     migrations: {
+      directory: './src/database/migrations',
       tableName: 'knex_migrations'
     }
   }
-
 };

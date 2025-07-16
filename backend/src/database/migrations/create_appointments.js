@@ -2,19 +2,15 @@ exports.up = function(knex) {
   return knex.schema.createTable('appointments', (table) => {
     table.increments('id').primary();
     table.integer('patient_id').notNullable()
-      .references('id').inTable('users')
-      .onDelete('CASCADE');
+      .references('id').inTable('users').onDelete('CASCADE');
     table.integer('student_id').notNullable()
-      .references('id').inTable('users')
-      .onDelete('CASCADE');
+      .references('id').inTable('users').onDelete('CASCADE');
     table.integer('slot_id').notNullable()
-      .references('id').inTable('availability')
-      .onDelete('CASCADE');
-    table.date('date').notNullable(); 
+      .references('id').inTable('availability').onDelete('CASCADE');
+    table.date('date').notNullable();
     table.time('start_time').notNullable();
     table.time('end_time').notNullable();
-    table.enum('status', ['scheduled', 'completed', 'cancelled'])
-      .defaultTo('scheduled');
+    table.enu('status', ['scheduled', 'completed', 'cancelled'], { useNative: true, enumName: 'appointment_status' }).defaultTo('scheduled');
     table.text('cancellation_reason');
     table.integer('cancellation_requested_by')
       .references('id').inTable('users');

@@ -1,9 +1,8 @@
 exports.up = function(knex) {
-  return knex.schema.createTable('patient_profile', (table) => {
+  return knex.schema.createTable('patient_profiles', (table) => {
     table.increments('id').primary();
     table.integer('user_id').notNullable().unique()
-      .references('id').inTable('users')
-      .onDelete('CASCADE');
+      .references('id').inTable('users').onDelete('CASCADE');
     table.string('phone');
     table.date('birth');
     table.string('cep');
@@ -15,5 +14,5 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTable('patient_profile');
+  return knex.schema.dropTable('patient_profiles');
 };

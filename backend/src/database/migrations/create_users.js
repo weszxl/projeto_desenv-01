@@ -4,7 +4,7 @@ exports.up = function(knex) {
     table.string('name').notNullable();
     table.string('email').unique().notNullable();
     table.string('password_hash').notNullable();
-    table.enum('role', ['admin', 'professor', 'student', 'patient']).notNullable();
+    table.enu('role', ['admin', 'professor', 'student', 'patient'], { useNative: true, enumName: 'user_role' }).notNullable();
     table.string('cpf');
     table.timestamps(true, true);
   });

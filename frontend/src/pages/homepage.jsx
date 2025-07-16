@@ -66,7 +66,7 @@ const HomePage = () => {
                     {/* CARD 1 */}
                     <a href="#" className="group bg-white rounded-xl shadow-lg hover:shadow-xl transition p-6 w-full max-w-sm flex flex-col text-left">
                         <div className="w-full h-48 mb-6 bg-gray-100 rounded-lg">
-                            <img src="/icons/icon-card_2.png" className="w-full h-full object-cover rounded-lg" alt="Paciente" />
+                            <img src="/icons/homePage/icon-card_2.png" className="w-full h-full object-cover rounded-lg" alt="Paciente" />
                         </div>
                         <div className="flex justify-between items-start">
                             <div>
@@ -80,7 +80,7 @@ const HomePage = () => {
                     {/* CARD 2 */}
                     <a href="#" className="group bg-white rounded-xl shadow-lg hover:shadow-xl transition p-6 w-full max-w-sm flex flex-col text-left">
                         <div className="w-full h-48 mb-6 bg-gray-100 rounded-lg">
-                            <img src="/icons/icon-card_1.png" className="w-full h-full object-cover rounded-lg" alt="Paciente" />
+                            <img src="/icons/homePage/icon-card_1.png" className="w-full h-full object-cover rounded-lg" alt="Paciente" />
                         </div>
                         <div className="flex justify-between items-start">
                             <div>
@@ -94,7 +94,7 @@ const HomePage = () => {
                     {/* CARD 3 */}
                     <a href="#" className="group bg-white rounded-xl shadow-lg hover:shadow-xl transition p-6 w-full max-w-sm flex flex-col text-left">
                         <div className="w-full h-48 mb-6 bg-gray-100 rounded-lg">
-                            <img src="/icons/icon-card_3.png" className="w-full h-full object-cover rounded-lg" alt="Paciente" />
+                            <img src="/icons/homePage/icon-card_3.png" className="w-full h-full object-cover rounded-lg" alt="Paciente" />
                         </div>
                         <div className="flex justify-between items-start">
                             <div>
@@ -133,7 +133,7 @@ const HomePage = () => {
                         <div className="flex flex-col justify-between h-full w-full">
                             <div className="flex items-start gap-4 text-left">
                                 <div className="flex-shrink-0 w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
-                                  <img src="/icons/icon-register.png" className="w-full h-full object-cover rounded-lg" alt="Paciente" />
+                                  <img src="/icons/homePage/icon-register.png" className="w-full h-full object-cover rounded-lg" alt="Paciente" />
                                 </div>
                                 <div>
                                     <h3 className="text-2xl font-bold text-gray-800">Cadastre-se Gratuitamente</h3>
@@ -143,7 +143,7 @@ const HomePage = () => {
 
                             <div className="flex items-start gap-4 text-left">
                                 <div className="flex-shrink-0 w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
-                                  <img src="/icons/icon-calendar.png" className="w-full h-full object-cover rounded-lg" alt="Paciente" />
+                                  <img src="/icons/homePage/icon-calendar.png" className="w-full h-full object-cover rounded-lg" alt="Paciente" />
                                 </div>
                                 <div>
                                     <h3 className="text-2xl font-bold text-gray-800">Encontre um Horário</h3>
@@ -153,7 +153,7 @@ const HomePage = () => {
 
                             <div className="flex items-start gap-4 text-left">
                                 <div className="flex-shrink-0 w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
-                                  <img src="/icons/icon-teleconsult.png" className="w-full h-full object-cover rounded-lg" alt="Paciente" />
+                                  <img src="/icons/homePage/icon-teleconsult.png" className="w-full h-full object-cover rounded-lg" alt="Paciente" />
                                 </div>
                                 <div>
                                     <h3 className="text-2xl font-bold text-gray-800">Participe da Consulta Online</h3>
