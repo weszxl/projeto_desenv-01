@@ -6,7 +6,7 @@ import { api } from '../../api/axiosConfig';
 const tiposConsulta = [
   { label: 'Selecione o tipo', value: '' },
   { label: 'Psicologia', value: 'psicologia' },
-  { label: 'Nutrição', value: 'nutricao' },
+  //{ label: 'Nutrição', value: 'nutricao' },
 ];
 
 const AppointmentMenu = ({ open, onClose }) => {
@@ -34,8 +34,7 @@ const AppointmentMenu = ({ open, onClose }) => {
     setAgendandoId(slot.id);
     try {
       await api.post('/api/appointments', { slot_id: slot.id });
-      alert('Agendamento realizado!');
-      onClose();
+      window.location.reload();
     } catch (error) {
       alert(error?.response?.data?.error || "Erro ao agendar.");
     } finally {
@@ -168,17 +167,11 @@ const AppointmentMenu = ({ open, onClose }) => {
                     <div>
                       <div className="font-semibold text-gray-800 text-base">{slot.student_name}</div>
                       <div className="text-sm text-gray-700">{slot.course_name || slot.specialty}</div>
-                      
                       {slot.professor_name && (
-                          <div className="text-xs text-gray-500 mt-1">
-                            Professor responsável: <span className="font-medium">{slot.professor_name}</span>
-                          </div>
-                        )}
-                      
-
-                      
-                      
-                      
+                        <div className="text-xs text-gray-500 mt-1">
+                          Professor responsável: <span className="font-medium">{slot.professor_name}</span>
+                        </div>
+                      )}
                       <div className="text-xs text-gray-600 mt-2">
                         {slot.about_me && slot.about_me.trim() !== '' ? slot.about_me : 'Sem informação'}
                       </div>

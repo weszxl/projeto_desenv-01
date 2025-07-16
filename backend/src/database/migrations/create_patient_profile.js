@@ -1,5 +1,5 @@
 exports.up = function(knex) {
-  return knex.schema.createTable('patient_profile', (table) => {
+  return knex.schema.createTable('patient_profiles', (table) => {
     table.increments('id').primary();
     table.integer('user_id').notNullable().unique()
       .references('id').inTable('users')

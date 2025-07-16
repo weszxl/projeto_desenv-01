@@ -139,11 +139,27 @@ const PatientPageDados = () => {
     }
   };
 
+  const handleBack = () => {
+    navigate('/patientPage');
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-blue-50">
       <Header />
       <main className="flex-grow py-10 px-2">
         <div className="max-w-3xl mx-auto">
+          <button
+            onClick={handleBack}
+            className="mb-4 flex items-center text-blue-600 hover:text-blue-800 transition"
+            aria-label="Voltar para página do paciente"
+            style={{ background: "none", border: "none", cursor: "pointer" }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Voltar
+          </button>
+
           <h1 className="text-3xl font-bold text-blue-700 mb-2">Editar Dados do Paciente</h1>
           <p className="text-gray-600 mb-6">Atualize suas informações pessoais</p>
           <div className="bg-white rounded-lg shadow px-5 py-7">

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/common/header';
 import Footer from '../components/common/footer';
 import { api } from '../api/axiosConfig';
@@ -50,7 +51,12 @@ const brToISO = (dateBR) => {
 };
 
 const StudentPageDados = () => {
+
+  const navigate = useNavigate();
+
   const [selectedTab, setSelectedTab] = useState('pessoais');
+
+
 
   const [foto, setFoto] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -151,12 +157,12 @@ const StudentPageDados = () => {
   };
 
   const handleCancelarPessoal = () => {
-    window.location.reload();
+  navigate('/studentPage');
+  };
+  const handleCancelarAcademico = () => {
+    navigate('/studentPage');
   };
 
-  const handleCancelarAcademico = () => {
-    window.location.reload();
-  };
 
   const handleSubmitPessoal = async (e) => {
     e.preventDefault();
@@ -203,6 +209,10 @@ const StudentPageDados = () => {
     }
   };
 
+  const handleBack = () => {
+    navigate('/studentPage');
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col bg-blue-50">
@@ -214,6 +224,7 @@ const StudentPageDados = () => {
       </div>
     );
   }
+  
 
   return (
     <div className="min-h-screen flex flex-col bg-blue-50">

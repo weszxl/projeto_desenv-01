@@ -27,7 +27,7 @@ const Appointment = {
     if (role === 'student') {
       return db('appointments as a')
         .leftJoin('users as u', 'a.patient_id', 'u.id')
-        .leftJoin('patient_profile as pp', 'pp.user_id', 'u.id')
+        .leftJoin('patient_profiles as pp', 'pp.user_id', 'u.id')
         .leftJoin('availability as av', 'a.slot_id', 'av.id')
         .select(
           'a.*',

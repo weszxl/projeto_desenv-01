@@ -14,7 +14,7 @@ const Footer = () => {
         <div className="flex justify-between items-center mb-8">
           <div>
             <img
-              src="/logoteste.png"
+              src="/logo.png"
               alt="Logo"
               className="w-36 h-auto object-contain"
             />
@@ -38,7 +38,7 @@ const Footer = () => {
         <div className="flex justify-between items-center mt-8">
           <div>
             <img
-              src="/logoteste.png"
+              src="/logo.png"
               alt="Logo"
               className="w-36 h-auto object-contain"
             />
@@ -48,7 +48,7 @@ const Footer = () => {
             <a href="#" aria-label="Social Media 1">
               <div className="w-8 h-8 bg-gray-300 rounded-md hover:bg-gray-400 transition">
                 <img
-                  src="/icons/footer-linkedln.png"
+                  src="/icons/footer/footer-linkedln.png"
                   alt="Facebook Placeholder"
                   className="w-full h-full object-cover rounded-md"
                 />
@@ -57,7 +57,7 @@ const Footer = () => {
             <a href="#" aria-label="Social Media 2">
               <div className="w-8 h-8 bg-gray-300 rounded-md hover:bg-gray-400 transition">
                 <img
-                  src="/icons/footer-facebook.png"
+                  src="/icons/footer/footer-facebook.png"
                   alt="Facebook Placeholder"
                   className="w-full h-full object-cover rounded-md"
                 />
@@ -66,7 +66,7 @@ const Footer = () => {
             <a href="#" aria-label="Social Media 3">
               <div className="w-8 h-8 bg-gray-300 rounded-md hover:bg-gray-400 transition">
                 <img
-                  src="/icons/footer-instagram.png"
+                  src="/icons/footer/footer-instagram.png"
                   alt="Instagram Placeholder"
                   className="w-full h-full object-cover rounded-md"
                 />

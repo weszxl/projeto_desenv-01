@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/common/header';
 import Footer from '../components/common/footer';
 import AvailableTimes from '../components/students/availableTimes';
@@ -25,6 +26,8 @@ const StudentPageAvailability = () => {
   const [profileCompleted, setProfileCompleted] = useState(true);
   const [studentId, setStudentId] = useState(null);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -45,6 +48,7 @@ const StudentPageAvailability = () => {
     if (studentId) {
       fetchHorarios();
     }
+    // eslint-disable-next-line
   }, [studentId]);
 
   const fetchHorarios = async () => {
@@ -89,8 +93,7 @@ const StudentPageAvailability = () => {
   };
 
   const handleDisponibilidadeCancelar = () => {
-    setData('');
-    setHoraInicial('');
+    navigate('/studentPage');
   };
 
   const calcularHoraFinal = (horaInicial) => {
@@ -114,6 +117,10 @@ const StudentPageAvailability = () => {
     }
   };
 
+  const handleBack = () => {
+    navigate('/studentPage');
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col bg-blue-50">
@@ -131,6 +138,17 @@ const StudentPageAvailability = () => {
       <Header />
       <main className="flex-grow py-10 px-2">
         <div className="max-w-3xl mx-auto">
+          <button
+            onClick={handleBack}
+            className="mb-4 flex items-center text-blue-600 hover:text-blue-800 transition"
+            aria-label="Voltar para página do estudante"
+            style={{ background: "none", border: "none", cursor: "pointer" }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Voltar
+          </button>
           <h1 className="text-3xl font-bold text-blue-700 mb-2">Meus horários disponíveis</h1>
           <p className="text-gray-600 mb-6">Gerencie os horários que você pode atender pacientes.</p>
           {msg && (
@@ -205,7 +223,6 @@ const StudentPageAvailability = () => {
               onClose={() => setOpenWarningProfile(false)}
               onGoToProfile={() => {
                 setOpenWarningProfile(false);
-        
               }}
             />
 
