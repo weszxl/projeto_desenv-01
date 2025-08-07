@@ -19,7 +19,7 @@ A plataforma oferece um ambiente intuitivo para cada tipo de usuário, garantind
 
 * **Para Estudantes:**
     * **Experiência Prática:** Desenvolva suas habilidades em um ambiente real de atendimento.
-    * 🗂**Gestão de Horários:** Defina e gerencie sua própria agenda de disponibilidade.
+    * **Gestão de Horários:** Defina e gerencie sua própria agenda de disponibilidade.
     * **Crescimento Profissional:** Obtenha maior experiência.
 
 ## Tecnologias Utilizadas
