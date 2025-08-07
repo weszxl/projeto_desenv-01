@@ -13,16 +13,16 @@
 A plataforma oferece um ambiente intuitivo para cada tipo de usuário, garantindo que a experiência seja direta e focada no que realmente importa.
 
 * **Para Pacientes:**
-    * ✅ **Custo Zero:** Acesso a atendimentos totalmente gratuitos.
-    * 🗓️ **Agendamento Simples:** Encontre horários disponíveis e agende sua consulta em poucos cliques.
-    * 🔒 **Segurança e Praticidade:** Acesse o histórico de consultas e os links para os atendimentos em um só lugar.
+    * **Custo Zero:** Acesso a atendimentos totalmente gratuitos.
+    * **Agendamento Simples:** Encontre horários disponíveis e agende sua consulta em poucos cliques.
+    * **Segurança e Praticidade:** Acesse o histórico de consultas e os links para os atendimentos em um só lugar.
 
 * **Para Estudantes:**
-    * 🎓 **Experiência Prática:** Desenvolva suas habilidades em um ambiente real de atendimento.
-    * 🗂️ **Gestão de Horários:** Defina e gerencie sua própria agenda de disponibilidade.
-    * 📈 **Crescimento Profissional:** Obtenha maior experiência.
+    * **Experiência Prática:** Desenvolva suas habilidades em um ambiente real de atendimento.
+    * 🗂**Gestão de Horários:** Defina e gerencie sua própria agenda de disponibilidade.
+    * **Crescimento Profissional:** Obtenha maior experiência.
 
-## 🚀 Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 Este projeto foi construído com as ferramentas:
 
